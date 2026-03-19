@@ -1,0 +1,12 @@
+name: Solr
+description: Allows your application to interact with Solr with simple high-level methods.
+metadata:
+  keywords:
+    - solr
+#  guide: https://docs.quarkiverse.io/quarkus-solr/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+  categories:
+    - "Integration"
+    - "Web"
+    - "Search"
+    - "Solr"
+  status: "preview"
