@@ -20,6 +20,7 @@ public class DevServiceProcessor {
     public static final String DEV_SERVICE_LABEL = "quarkus-dev-service-solr";
 
     //TODO: Customize dev-service with setup or own config
+    //TODO: Locate existing service
 
     @BuildStep
     public DevServicesResultBuildItem startDevContainer(SolrDevServicesConfig config) throws BuildException {

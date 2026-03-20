@@ -20,6 +20,10 @@ class SolrProcessor {
         return new FeatureBuildItem(FEATURE);
     }
 
+    //TODO: Test Solr inself
+    //TODO: Native tests
+    //TODO: Tests for bean mapping
+
     @BuildStep
     @Record(ExecutionTime.RUNTIME_INIT)
     SyntheticBeanBuildItem solrClient(SolrSetupRecorder recorder) {
