@@ -45,11 +45,11 @@ public interface SolrDevServicesConfig {
     Optional<String> collection();
 
     /**
-     * Custom configuration to be used
+     * Custom configuration to be used. Must be a directory on the classpath containing at least a solrconfig.xml
      * <p>
      * If not set, default configuration of SOLR docker container is used
      */
-    Optional<SolrDevServicesConfigurationConfig> configuration();
+    Optional<String> configuration();
 
     @Override
     String toString();

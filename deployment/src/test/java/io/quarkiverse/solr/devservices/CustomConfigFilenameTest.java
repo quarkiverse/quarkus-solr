@@ -1,8 +1,9 @@
-package io.quarkiverse.solr;
+package io.quarkiverse.solr.devservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
@@ -21,10 +22,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
 
-class DocumentTest {
+class CustomConfigFilenameTest {
     @RegisterExtension
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
+            .overrideConfigKey("quarkus.solr.devservices.configuration",
+                    Paths.get("").toAbsolutePath().resolve("src/test/resources/testconfig").toString())
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+
+    private static final String ID = UUID.randomUUID().toString();
 
     @Inject
     SolrClient solrClient;
@@ -38,7 +43,7 @@ class DocumentTest {
     @Test
     void indexDocument() throws SolrServerException, IOException {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.addField("id", UUID.randomUUID().toString());
+        doc.addField("id", ID);
         doc.addField("description", "Stephens Kindle Paperwhite");
         UpdateResponse updateResponse = solrClient.add("dummy", doc);
         UpdateResponse commitResponse = solrClient.commit("dummy");
@@ -51,7 +56,7 @@ class DocumentTest {
     void queryDocument() throws SolrServerException, IOException {
         indexDocument();
 
-        SolrQuery query = new SolrQuery("description:kindle");
+        SolrQuery query = new SolrQuery("description:Stephens");
         query.addField("*");
         QueryResponse response = solrClient.query("dummy", query);
         SolrDocumentList documents = response.getResults();
@@ -69,7 +74,8 @@ class DocumentTest {
         QueryResponse response = solrClient.query("dummy", query);
         SolrDocumentList documents = response.getResults();
 
-        //description is only a string, so it won't be found with a partial match
-        assertEquals(0, documents.getNumFound());
+        //There is a phonetic matching, so this works
+        assertEquals(1, documents.getNumFound());
+        assertEquals("Stephens Kindle Paperwhite", documents.get(0).getFirstValue("description"));
     }
 }

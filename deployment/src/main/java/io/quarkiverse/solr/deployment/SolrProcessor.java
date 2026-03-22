@@ -1,5 +1,9 @@
 package io.quarkiverse.solr.deployment;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
+import org.apache.solr.client.solrj.SolrClient;
+
 import io.quarkiverse.solr.runtime.SolrSetupRecorder;
 import io.quarkus.arc.deployment.SyntheticBeanBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -7,8 +11,6 @@ import io.quarkus.deployment.annotations.ExecutionTime;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.runtime.RuntimeValue;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.solr.client.solrj.SolrClient;
 
 class SolrProcessor {
     public static final String FEATURE = "solr";
@@ -18,8 +20,6 @@ class SolrProcessor {
         return new FeatureBuildItem(FEATURE);
     }
 
-    //TODO: Shared Container?
-    //TODO: Get rid of testcontainer
     //TODO: Native tests
     //TODO: Health indicator
     //TODO: Metrics

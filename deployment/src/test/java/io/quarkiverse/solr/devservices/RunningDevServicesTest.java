@@ -1,6 +1,6 @@
 package io.quarkiverse.solr.devservices;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,7 @@ import org.testcontainers.DockerClientFactory;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 
-import io.quarkiverse.solr.deployment.devservices.DevServiceProcessor;
+import io.quarkiverse.solr.deployment.devservices.SolrDevContainer;
 import io.quarkus.test.QuarkusUnitTest;
 
 class RunningDevServicesTest {
@@ -33,7 +33,7 @@ class RunningDevServicesTest {
         DockerClient dockerClient = DockerClientFactory.lazyClient();
         List<Container> containers = dockerClient.listContainersCmd()
                 .withShowAll(true)
-                .withLabelFilter(Map.of("org.testcontainers", "true", DevServiceProcessor.DEV_SERVICE_LABEL, "true"))
+                .withLabelFilter(Map.of("org.testcontainers", "true", SolrDevContainer.DEV_SERVICE_LABEL, "true"))
                 .exec();
         assertEquals(1, containers.size());
         Container container = containers.get(0);

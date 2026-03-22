@@ -14,7 +14,7 @@ import org.testcontainers.DockerClientFactory;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 
-import io.quarkiverse.solr.deployment.devservices.DevServiceProcessor;
+import io.quarkiverse.solr.deployment.devservices.SolrDevContainer;
 import io.quarkus.test.QuarkusUnitTest;
 
 class DisabledDevServicesByUrlTest {
@@ -28,7 +28,7 @@ class DisabledDevServicesByUrlTest {
         DockerClient dockerClient = DockerClientFactory.lazyClient();
         List<Container> containers = dockerClient.listContainersCmd()
                 .withShowAll(true)
-                .withLabelFilter(Map.of("org.testcontainers", "true", DevServiceProcessor.DEV_SERVICE_LABEL, "true"))
+                .withLabelFilter(Map.of("org.testcontainers", "true", SolrDevContainer.DEV_SERVICE_LABEL, "true"))
                 .exec();
         assertEquals(0, containers.size());
     }

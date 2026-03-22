@@ -1,7 +1,12 @@
 package io.quarkiverse.solr.devservices;
 
-import io.quarkus.test.QuarkusUnitTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.util.UUID;
+
 import jakarta.inject.Inject;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.SolrQuery;
@@ -14,17 +19,12 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.IOException;
-import java.util.UUID;
+import io.quarkus.test.QuarkusUnitTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class CustomConfigTest {
+class CustomConfigClasspathTest {
     @RegisterExtension
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
-            .overrideConfigKey("quarkus.solr.devservices.configuration.name", "CustomConfig")
-            .overrideConfigKey("quarkus.solr.devservices.configuration.solrconfig", "solrconfig.xml")
-            .overrideConfigKey("quarkus.solr.devservices.configuration.schema", "schema.xml")
+            .overrideConfigKey("quarkus.solr.devservices.configuration", "/testconfig")
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     private static final String ID = UUID.randomUUID().toString();
