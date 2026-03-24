@@ -16,20 +16,19 @@
  */
 package io.quarkiverse.solr.it;
 
-import java.io.IOException;
-import java.util.List;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
-
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.jboss.logging.Logger;
+
+import java.io.IOException;
+import java.util.List;
 
 @Path("/solr")
 @ApplicationScoped

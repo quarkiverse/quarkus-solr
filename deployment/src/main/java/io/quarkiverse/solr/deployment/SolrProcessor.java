@@ -1,9 +1,5 @@
 package io.quarkiverse.solr.deployment;
 
-import jakarta.enterprise.context.ApplicationScoped;
-
-import org.apache.solr.client.solrj.SolrClient;
-
 import io.quarkiverse.solr.runtime.SolrBuildTimeConfig;
 import io.quarkiverse.solr.runtime.SolrHealthCheck;
 import io.quarkiverse.solr.runtime.SolrSetupRecorder;
@@ -14,6 +10,8 @@ import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.solr.client.solrj.SolrClient;
 
 class SolrProcessor {
     public static final String FEATURE = "solr";

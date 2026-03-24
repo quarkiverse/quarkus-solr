@@ -1,13 +1,12 @@
 package io.quarkiverse.solr.devmode;
 
+import io.quarkus.test.QuarkusDevModeTest;
+import io.restassured.RestAssured;
 import org.hamcrest.core.IsEqual;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import io.quarkus.test.QuarkusDevModeTest;
-import io.restassured.RestAssured;
 
 class SolrDevModeTest {
 

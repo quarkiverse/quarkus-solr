@@ -1,6 +1,7 @@
 package io.quarkiverse.solr.deployment.devservices;
 
 import io.quarkiverse.solr.runtime.SolrDevServicesConfig;
+import io.quarkiverse.solr.runtime.SolrRunTimeConfig;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.BuildSteps;
 import io.quarkus.deployment.builditem.DevServicesComposeProjectBuildItem;
@@ -26,7 +27,6 @@ import static io.quarkus.devservices.common.ConfigureUtil.configureSharedService
 @BuildSteps(onlyIf = SolrDevServicesEnabled.class)
 public class DevServiceProcessor {
     public static final String DEV_SERVICE_LABEL = "quarkus-dev-service-solr";
-    private static final String URL_CONFIG_KEY = "quarkus.solr.url";
 
     @BuildStep
     public DevServicesResultBuildItem startDevContainer(SolrDevServicesConfig config,
@@ -62,7 +62,8 @@ public class DevServiceProcessor {
         return DevServicesResultBuildItem.discovered()
                 .feature("solr")
                 .containerId(containerAddress.getId())
-                .config(Map.of(URL_CONFIG_KEY,
+                .config(Map.of(
+                        SolrRunTimeConfig.URL_CONFIG_KEY,
                         "http://" + containerAddress.getHost() + ":" + containerAddress.getPort() + "/solr"))
                 .build();
     }
@@ -78,8 +79,9 @@ public class DevServiceProcessor {
                 .serviceName(config.serviceName())
                 .serviceConfig(config.toString())
                 .startable(() -> container)
-                .configProvider(
-                        Map.of(URL_CONFIG_KEY, s -> "http://" + container.getHost() + ":" + container.getPort() + "/solr"))
+                .configProvider(Map.of(
+                        SolrRunTimeConfig.URL_CONFIG_KEY,
+                        s -> "http://" + container.getHost() + ":" + container.getPort() + "/solr"))
                 .build();
     }
 

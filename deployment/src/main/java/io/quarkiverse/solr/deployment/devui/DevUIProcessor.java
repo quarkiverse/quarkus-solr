@@ -8,7 +8,7 @@ import io.quarkus.devui.spi.JsonRPCProvidersBuildItem;
 import io.quarkus.devui.spi.page.CardPageBuildItem;
 import io.quarkus.devui.spi.page.Page;
 
-@BuildSteps(onlyIf = { IsDevelopment.class })
+@BuildSteps(onlyIf = {IsDevelopment.class})
 public class DevUIProcessor {
     private static final String SOLR_LOGO = "solr.png";
     private static final String SOLR_GROUPID = "org.apache.solr";

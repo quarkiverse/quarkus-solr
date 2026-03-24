@@ -1,14 +1,13 @@
 package io.quarkiverse.solr.deployment.devservices;
 
-import java.util.function.BooleanSupplier;
-
-import org.jboss.logging.Logger;
-
 import io.quarkiverse.solr.runtime.SolrDevServicesConfig;
 import io.quarkiverse.solr.runtime.SolrRunTimeConfig;
 import io.quarkus.deployment.dev.devservices.DevServicesConfig;
 import io.quarkus.runtime.LaunchMode;
 import io.quarkus.runtime.configuration.ConfigUtils;
+import org.jboss.logging.Logger;
+
+import java.util.function.BooleanSupplier;
 
 public class SolrDevServicesEnabled implements BooleanSupplier {
     private static final Logger log = Logger.getLogger(SolrDevServicesEnabled.class);
@@ -17,7 +16,7 @@ public class SolrDevServicesEnabled implements BooleanSupplier {
     private final LaunchMode launchMode;
 
     public SolrDevServicesEnabled(SolrDevServicesConfig solrDevServicesConfig, DevServicesConfig devServicesConfig,
-            LaunchMode launchMode) {
+                                  LaunchMode launchMode) {
         this.solrDevServicesConfig = solrDevServicesConfig;
         this.devServicesConfig = devServicesConfig;
         this.launchMode = launchMode;

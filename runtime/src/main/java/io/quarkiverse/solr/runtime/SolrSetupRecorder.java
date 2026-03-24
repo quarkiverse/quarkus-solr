@@ -1,19 +1,18 @@
 package io.quarkiverse.solr.runtime;
 
-import java.util.List;
-
+import io.quarkus.runtime.RuntimeValue;
+import io.quarkus.runtime.annotations.Recorder;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudHttp2SolrClient;
 import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.jboss.logging.Logger;
 
-import io.quarkus.runtime.RuntimeValue;
-import io.quarkus.runtime.annotations.Recorder;
+import java.util.List;
 
 @Recorder
 public class SolrSetupRecorder {
-    private final RuntimeValue<SolrRunTimeConfig> runTimeConfig;
     private static final Logger log = Logger.getLogger(SolrSetupRecorder.class);
+    private final RuntimeValue<SolrRunTimeConfig> runTimeConfig;
 
     public SolrSetupRecorder(RuntimeValue<SolrRunTimeConfig> runTimeConfig) {
         this.runTimeConfig = runTimeConfig;
