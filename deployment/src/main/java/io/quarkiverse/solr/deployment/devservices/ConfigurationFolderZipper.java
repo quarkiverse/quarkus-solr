@@ -1,7 +1,5 @@
 package io.quarkiverse.solr.deployment.devservices;
 
-import org.jspecify.annotations.NonNull;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +11,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import org.jspecify.annotations.NonNull;
 
 public class ConfigurationFolderZipper {
     private static final String CONFIG_PROPERTY = "quarkus.solr.devservices.configuration";

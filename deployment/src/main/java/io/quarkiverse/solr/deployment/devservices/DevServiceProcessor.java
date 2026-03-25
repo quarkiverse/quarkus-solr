@@ -1,5 +1,16 @@
 package io.quarkiverse.solr.deployment.devservices;
 
+import static io.quarkus.devservices.common.ConfigureUtil.configureSharedServiceLabel;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+
+import org.testcontainers.shaded.com.google.common.base.Strings;
+
 import io.quarkiverse.solr.runtime.SolrDevServicesConfig;
 import io.quarkiverse.solr.runtime.SolrRunTimeConfig;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -13,16 +24,6 @@ import io.quarkus.devservices.common.ComposeLocator;
 import io.quarkus.devservices.common.ContainerAddress;
 import io.quarkus.devservices.common.ContainerLocator;
 import io.quarkus.runtime.LaunchMode;
-import org.testcontainers.shaded.com.google.common.base.Strings;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-
-import static io.quarkus.devservices.common.ConfigureUtil.configureSharedServiceLabel;
 
 @BuildSteps(onlyIf = SolrDevServicesEnabled.class)
 public class DevServiceProcessor {
@@ -30,10 +31,10 @@ public class DevServiceProcessor {
 
     @BuildStep
     public DevServicesResultBuildItem startDevContainer(SolrDevServicesConfig config,
-                                                        DevServicesConfig devServicesConfig,
-                                                        DevServicesComposeProjectBuildItem composeProject,
-                                                        List<DevServicesSharedNetworkBuildItem> devServicesSharedNetworkBuildItem,
-                                                        LaunchModeBuildItem launchMode) {
+            DevServicesConfig devServicesConfig,
+            DevServicesComposeProjectBuildItem composeProject,
+            List<DevServicesSharedNetworkBuildItem> devServicesSharedNetworkBuildItem,
+            LaunchModeBuildItem launchMode) {
         boolean useSharedNetwork = DevServicesSharedNetworkBuildItem.isSharedNetworkRequired(devServicesConfig,
                 devServicesSharedNetworkBuildItem);
         return locateLocaleContainer(config, launchMode.getLaunchMode())
@@ -49,9 +50,9 @@ public class DevServiceProcessor {
     }
 
     private Optional<ContainerAddress> locateComposeContainer(SolrDevServicesConfig config,
-                                                              DevServicesComposeProjectBuildItem composeProject,
-                                                              LaunchMode launchMode,
-                                                              boolean useSharedNetwork) {
+            DevServicesComposeProjectBuildItem composeProject,
+            LaunchMode launchMode,
+            boolean useSharedNetwork) {
         String solrJVersion = getSolrjVersion();
         String imageName = config.imageName().orElse(SolrDevContainer.DEFAULT_IMAGE_NAME + ":" + solrJVersion);
         List<String> images = List.of(imageName);
@@ -69,7 +70,7 @@ public class DevServiceProcessor {
     }
 
     private DevServicesResultBuildItem createNew(SolrDevServicesConfig config, LaunchMode launchMode, String defaultNetworkId,
-                                                 boolean useSharedNetwork) {
+            boolean useSharedNetwork) {
         String solrJVersion = getSolrjVersion();
         SolrDevContainer container = new SolrDevContainer(config, solrJVersion, useSharedNetwork, defaultNetworkId);
         configureSharedServiceLabel(container, launchMode, DEV_SERVICE_LABEL, config.serviceName());

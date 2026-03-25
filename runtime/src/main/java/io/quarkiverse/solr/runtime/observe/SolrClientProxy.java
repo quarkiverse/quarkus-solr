@@ -1,12 +1,12 @@
 package io.quarkiverse.solr.runtime.observe;
 
+import java.io.IOException;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.util.NamedList;
 import org.jboss.logging.Logger;
-
-import java.io.IOException;
 
 public class SolrClientProxy extends SolrClient {
     private static final Logger log = Logger.getLogger(SolrClientProxy.class);

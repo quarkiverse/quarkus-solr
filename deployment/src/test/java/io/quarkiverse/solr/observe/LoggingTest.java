@@ -1,9 +1,12 @@
 package io.quarkiverse.solr.observe;
 
-import io.quarkiverse.solr.runtime.observe.SolrClientProxy;
-import io.quarkus.test.InMemoryLogHandler;
-import io.quarkus.test.QuarkusUnitTest;
-import jakarta.inject.Inject;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -12,12 +15,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-
-import static org.junit.jupiter.api.Assertions.*;
+import io.quarkiverse.solr.runtime.observe.SolrClientProxy;
+import io.quarkus.test.InMemoryLogHandler;
+import io.quarkus.test.QuarkusUnitTest;
+import jakarta.inject.Inject;
 
 class LoggingTest {
     @RegisterExtension

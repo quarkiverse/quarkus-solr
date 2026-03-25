@@ -1,12 +1,13 @@
 package io.quarkiverse.solr.runtime.observe;
 
-import io.quarkus.runtime.metrics.MetricsFactory;
-import org.apache.solr.client.solrj.SolrRequest;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.solr.client.solrj.SolrRequest;
+
+import io.quarkus.runtime.metrics.MetricsFactory;
 
 public class SolrMetrics {
     private final AtomicInteger successRequestCounter = new AtomicInteger(0);

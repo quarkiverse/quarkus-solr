@@ -1,18 +1,19 @@
 package io.quarkiverse.solr.runtime;
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.impl.CloudHttp2SolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
+import org.jboss.logging.Logger;
+
 import io.quarkiverse.solr.runtime.observe.SolrClientProxy;
 import io.quarkiverse.solr.runtime.observe.SolrMetrics;
 import io.quarkus.arc.runtime.BeanContainer;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import io.quarkus.runtime.metrics.MetricsFactory;
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.impl.CloudHttp2SolrClient;
-import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
-import org.jboss.logging.Logger;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 @Recorder
 public class SolrSetupRecorder {

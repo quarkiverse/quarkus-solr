@@ -1,13 +1,5 @@
 package io.quarkiverse.solr.deployment.devservices;
 
-import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.net.URIBuilder;
-import io.quarkiverse.solr.runtime.SolrDevServicesConfig;
-import io.quarkus.deployment.builditem.Startable;
-import io.quarkus.devservices.common.ConfigureUtil;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -16,6 +8,16 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.net.URIBuilder;
+
+import io.quarkiverse.solr.runtime.SolrDevServicesConfig;
+import io.quarkus.deployment.builditem.Startable;
+import io.quarkus.devservices.common.ConfigureUtil;
 
 public class SolrDevContainer extends GenericContainer<SolrDevContainer> implements Startable {
     public static final Integer SOLR_PORT = 8983;
@@ -29,7 +31,7 @@ public class SolrDevContainer extends GenericContainer<SolrDevContainer> impleme
     private final String hostName;
 
     public SolrDevContainer(SolrDevServicesConfig config, String defaultSolrVersion, boolean useSharedNetwork,
-                            String defaultNetworkId) {
+            String defaultNetworkId) {
         super(config.imageName().orElse(DEFAULT_IMAGE_NAME + ":" + defaultSolrVersion));
         this.config = config;
         this.httpClient = HttpClient.newBuilder().build();
@@ -90,7 +92,7 @@ public class SolrDevContainer extends GenericContainer<SolrDevContainer> impleme
     }
 
     private void create(String name, Map<String, String> parameters, HttpRequest.BodyPublisher bodyPublisher,
-                        String contentType) {
+            String contentType) {
         try {
             URIBuilder builder = new URIBuilder()
                     .setScheme("http")

@@ -1,9 +1,10 @@
 package io.quarkiverse.solr.devmode;
 
+import org.apache.solr.client.solrj.SolrClient;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import org.apache.solr.client.solrj.SolrClient;
 
 @Path("/dev")
 public class DevResource {
