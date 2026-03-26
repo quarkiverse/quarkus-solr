@@ -2,14 +2,15 @@ package io.quarkiverse.solr.it;
 
 import org.apache.solr.client.solrj.beans.Field;
 
+@SuppressWarnings("unused") //Used via reflection
 public class SolrDocument {
     @Field
     public String id;
 
-    @Field("name")
+    @Field("name_t")
     public String name;
 
-    @Field("description")
+    @Field("description_t")
     public String description;
 
     @SuppressWarnings("unused") //Used internally by solr
