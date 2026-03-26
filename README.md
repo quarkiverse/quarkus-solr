@@ -2,6 +2,8 @@
 
 [![Version](https://img.shields.io/maven-central/v/io.quarkiverse.solr/quarkus-solr?logo=apache-maven&style=flat-square)](https://central.sonatype.com/artifact/io.quarkiverse.solr/quarkus-solr-parent)
 
+[//]: <> (TODO: Update Readme and Documentation)
+
 ## Welcome to Quarkiverse!
 
 Congratulations and thank you for creating a new Quarkus extension project in Quarkiverse!

@@ -44,6 +44,7 @@ public class SolrSetupRecorder {
 
     public Consumer<MetricsFactory> registerMetrics(BeanContainer value) {
         return metricsFactory -> {
+            //noinspection resource
             SolrClientProxy solrClientProxy = value.beanInstance(SolrClientProxy.class);
             solrClientProxy.registerMetrics(new SolrMetrics(metricsFactory));
         };

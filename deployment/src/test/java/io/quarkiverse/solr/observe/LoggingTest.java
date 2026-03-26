@@ -28,11 +28,11 @@ class LoggingTest {
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
     private static final Logger rootLogger = LogManager.getLogManager().getLogger("io.quarkiverse.solr");
-    InMemoryLogHandler inMemoryLogHandler;
-    Level originalLevel = rootLogger.getLevel();
+    private final Level originalLevel = rootLogger.getLevel();
+    private InMemoryLogHandler inMemoryLogHandler;
 
     @Inject
-    SolrClient solrClient;
+    private SolrClient solrClient;
 
     @BeforeEach
     void setUp() {

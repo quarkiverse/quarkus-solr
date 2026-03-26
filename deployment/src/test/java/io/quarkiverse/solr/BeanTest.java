@@ -53,6 +53,7 @@ class BeanTest {
         assertEquals("Stephens Kindle Paperwhite", documents.get(0).description);
     }
 
+    @SuppressWarnings("unused") //Used via reflection
     public static class Bean {
         @Field
         public String id;

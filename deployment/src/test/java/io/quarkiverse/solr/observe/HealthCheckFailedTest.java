@@ -17,7 +17,7 @@ import io.smallrye.health.SmallRyeHealthReporter;
 class HealthCheckFailedTest {
     @RegisterExtension
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
-            .overrideConfigKey("quarkus.solr.url", "http://invalid.com:8080")
+            .overrideConfigKey("quarkus.solr.url", "https://invalid.com:8080")
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     @Inject
