@@ -60,6 +60,7 @@ public class DevServiceProcessor {
     }
 
     private DevServicesResultBuildItem createFromAddress(ContainerAddress containerAddress) {
+        //noinspection HttpUrlsUsage
         return DevServicesResultBuildItem.discovered()
                 .feature("solr")
                 .containerId(containerAddress.getId())
@@ -74,6 +75,7 @@ public class DevServiceProcessor {
         String solrJVersion = getSolrjVersion();
         SolrDevContainer container = new SolrDevContainer(config, solrJVersion, useSharedNetwork, defaultNetworkId);
         configureSharedServiceLabel(container, launchMode, DEV_SERVICE_LABEL, config.serviceName());
+        //noinspection HttpUrlsUsage
         return DevServicesResultBuildItem.owned()
                 .feature("solr")
                 .serviceConfig(config.toString())

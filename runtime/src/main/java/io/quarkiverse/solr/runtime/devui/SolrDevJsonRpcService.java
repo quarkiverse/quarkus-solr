@@ -10,6 +10,7 @@ public class SolrDevJsonRpcService {
         this.solrRunTimeConfig = solrRunTimeConfig;
     }
 
+    @SuppressWarnings("unused") //Used indirectly as JSON RCP method
     @NonBlocking
     public String getSolrAdminUrl() {
         return solrRunTimeConfig.url().get(0);

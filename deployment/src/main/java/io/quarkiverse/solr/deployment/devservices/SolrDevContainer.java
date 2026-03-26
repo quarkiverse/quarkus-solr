@@ -35,7 +35,9 @@ public class SolrDevContainer extends GenericContainer<SolrDevContainer> impleme
         super(config.imageName().orElse(DEFAULT_IMAGE_NAME + ":" + defaultSolrVersion));
         this.config = config;
         this.httpClient = HttpClient.newBuilder().build();
+        //noinspection resource
         waitingFor(Wait.forLogMessage(WAIT_REGEX, 1).withStartupTimeout(Duration.ofMinutes(1)));
+        //noinspection resource
         withReuse(true);
         this.useSharedNetwork = useSharedNetwork;
         this.hostName = ConfigureUtil.configureNetwork(this, defaultNetworkId, useSharedNetwork, "solr");
