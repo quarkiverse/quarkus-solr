@@ -151,7 +151,7 @@ endif::add-copy-button-to-config-props[]
 
 [.description]
 --
-The value of the label attached to the started container. This property is used when `shared` is set to `true`. In this case, before starting a container, Dev Services looks for a container with the `quarkus-dev-service-solr` label set to the configured value. If found, it will use this container instead of starting a new one. Otherwise it starts a new container with the `quarkus-dev-service-solr` label set to the specified value.
+The value of the label attached to the started container. This property is used when `shared` is set to `true`. In this case, before starting a container, Dev Services looks for a container with the `quarkus-dev-service-solr` label set to the configured value. If found, it will use this container instead of starting a new one. Otherwise, it starts a new container with the `quarkus-dev-service-solr` label set to the specified value.
 
 This property is used when you need multiple shared Vault instances.
 
