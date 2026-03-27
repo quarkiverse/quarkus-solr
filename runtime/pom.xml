@@ -30,6 +30,10 @@
             <artifactId>solr-solrj</artifactId>
             <version>${solrj.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-context-propagation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

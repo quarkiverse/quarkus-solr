@@ -7,27 +7,6 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
-a|icon:lock[title=Fixed at build time] [[quarkus-solr_quarkus-solr-health-enabled]] [.property-path]##link:#quarkus-solr_quarkus-solr-health-enabled[`+++quarkus.solr.health-enabled+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.solr.health-enabled+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-Is solr health check enabled
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_HEALTH_ENABLED+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_SOLR_HEALTH_ENABLED+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++true+++`
-
 a|icon:lock[title=Fixed at build time] [[quarkus-solr_quarkus-solr-devservices-enabled]] [.property-path]##link:#quarkus-solr_quarkus-solr-devservices-enabled[`+++quarkus.solr.devservices.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.solr.devservices.enabled+++[]
@@ -190,50 +169,6 @@ endif::add-copy-button-to-env-var[]
 --
 |boolean
 |`+++true+++`
-
-a| [[quarkus-solr_quarkus-solr-cloud]] [.property-path]##link:#quarkus-solr_quarkus-solr-cloud[`+++quarkus.solr.cloud+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.solr.cloud+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-Should solr could be used?
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_CLOUD+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_SOLR_CLOUD+++`
-endif::add-copy-button-to-env-var[]
---
-|boolean
-|`+++false+++`
-
-a| [[quarkus-solr_quarkus-solr-url]] [.property-path]##link:#quarkus-solr_quarkus-solr-url[`+++quarkus.solr.url+++`]##
-ifdef::add-copy-button-to-config-props[]
-config_property_copy_button:+++quarkus.solr.url+++[]
-endif::add-copy-button-to-config-props[]
-
-
-[.description]
---
-URL on which Solr is running.
-
-If multiple URLs are given, the first one is used as the base URL and the others are used for failover. If solr could is not used, only one URL can be defined.
-
-
-ifdef::add-copy-button-to-env-var[]
-Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_URL+++[]
-endif::add-copy-button-to-env-var[]
-ifndef::add-copy-button-to-env-var[]
-Environment variable: `+++QUARKUS_SOLR_URL+++`
-endif::add-copy-button-to-env-var[]
---
-|list of string
-|required icon:exclamation-circle[title=Configuration property is required]
 
 |===
 

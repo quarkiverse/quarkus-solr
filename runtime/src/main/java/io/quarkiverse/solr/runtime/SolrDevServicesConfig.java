@@ -47,7 +47,7 @@ public interface SolrDevServicesConfig {
     /**
      * Custom configuration to be used. Must be a directory on the classpath containing at least a solrconfig.xml
      * <p>
-     * If not set, default configuration of SOLR docker container is used
+     * If not set, default configuration of Solr docker container is used
      */
     Optional<String> configuration();
 
@@ -59,7 +59,7 @@ public interface SolrDevServicesConfig {
      * set to the configured value. If found, it will use this container instead of starting a new one. Otherwise, it
      * starts a new container with the {@code quarkus-dev-service-solr} label set to the specified value.
      * <p>
-     * This property is used when you need multiple shared Vault instances.
+     * This property is used when you need multiple shared Solr instances.
      */
     @WithDefault("solr")
     String serviceName();

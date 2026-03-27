@@ -29,6 +29,7 @@ For instance, with Maven, add the following dependency to your POM file:
 == Use SolrJ in your application
 
 You can inject the `SolrClient` bean provided by the extension to interact with Solr.
+Each class will get its own instance of `SolrClient` (scope is `@Dependent`), so you can safely add custom configuration to it if needed.
 For example:
 
 [source,java]
