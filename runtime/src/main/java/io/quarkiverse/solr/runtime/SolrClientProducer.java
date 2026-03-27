@@ -46,7 +46,6 @@ public class SolrClientProducer {
         return new SolrClientProxy(client, solrMetrics);
     }
 
-    //TODO: Test Solr cloud mode
     private CloudHttp2SolrClient createCloudSolrClient(List<String> urls) {
         log.info("Created Solr cloud client with URLs: " + String.join(", ", urls));
         CloudSolrClient.Builder builder = new CloudHttp2SolrClient.Builder(urls)

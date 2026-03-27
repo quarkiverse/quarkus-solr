@@ -21,9 +21,6 @@ import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 class SolrProcessor {
     public static final String FEATURE = "solr";
 
-    //TODO: Codestart template
-    //TODO: Mutiny based api?
-
     @BuildStep
     FeatureBuildItem feature() {
         return new FeatureBuildItem(FEATURE);
