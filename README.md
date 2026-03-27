@@ -52,13 +52,14 @@ public class SolrService {
 ```
 
 For dev-mode, a Solr instance will be automatically started and configured with a default collection called _dummy_.
-Check the documentation for more details on how to customize the dev-service configuration.
+Check the [documentation](https://docs.quarkiverse.io/quarkus-solr/dev/index.html)  for more details on how to customize
+the dev-service configuration.
 
 For non-dev-mode, you can configure the Solr client to connect to your Solr instance using the following properties:
 
 ```properties
 quarkus.solr.url=http://localhost:8983/solr
-quarkus.solr.collection=collectionName
+quarkus.solr.default-collection=collectionName
 ```
 
 ## Compatibility
