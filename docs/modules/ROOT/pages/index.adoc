@@ -56,12 +56,12 @@ The extension provides a https://quarkus.io/guides/dev-services[dev service] for
 This allows you to easily run a Solr instance in a container during development.
 
 By default, the dev service will start a Solr instance with a single collection named _dummy_.
-You can customize the dev service using <<Extension Configuration Reference, configuration properties>>.
+You can customize the dev service using <<Extension Configuration Reference,configuration properties>>.
 
 == Observability
 
 All interactions with Solr are logged at the DEBUG level, so you can enable DEBUG logging for the `io.quarkiverse.solr` package to see the details of the interactions.
-If you add https://quarkus.io/guides/smallrye-health[quarkus-smallrye-health] or https://quarkus.io/guides/telemetry-micrometer[quarkus-micrometer-registry-prometheus] to your application, an health check and metrics will be automatically provided for the Solr client.
+If you add https://quarkus.io/guides/smallrye-health[quarkus-smallrye-health] or https://quarkus.io/guides/telemetry-micrometer[quarkus-micrometer-registry-prometheus] to your application, a health check and metrics will be automatically provided for the Solr client.
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
