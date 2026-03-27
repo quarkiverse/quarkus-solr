@@ -7,6 +7,27 @@ h|[.header-title]##Configuration property##
 h|Type
 h|Default
 
+a|icon:lock[title=Fixed at build time] [[quarkus-solr_quarkus-solr-health-enabled]] [.property-path]##link:#quarkus-solr_quarkus-solr-health-enabled[`+++quarkus.solr.health-enabled+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.health-enabled+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Is solr health check enabled
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_HEALTH_ENABLED+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_HEALTH_ENABLED+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++true+++`
+
 a|icon:lock[title=Fixed at build time] [[quarkus-solr_quarkus-solr-devservices-enabled]] [.property-path]##link:#quarkus-solr_quarkus-solr-devservices-enabled[`+++quarkus.solr.devservices.enabled+++`]##
 ifdef::add-copy-button-to-config-props[]
 config_property_copy_button:+++quarkus.solr.devservices.enabled+++[]
@@ -109,7 +130,7 @@ endif::add-copy-button-to-config-props[]
 --
 Custom configuration to be used. Must be a directory on the classpath containing at least a solrconfig.xml
 
-If not set, default configuration of SOLR docker container is used
+If not set, default configuration of Solr docker container is used
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -132,7 +153,7 @@ endif::add-copy-button-to-config-props[]
 --
 The value of the label attached to the started container. This property is used when `shared` is set to `true`. In this case, before starting a container, Dev Services looks for a container with the `quarkus-dev-service-solr` label set to the configured value. If found, it will use this container instead of starting a new one. Otherwise, it starts a new container with the `quarkus-dev-service-solr` label set to the specified value.
 
-This property is used when you need multiple shared Vault instances.
+This property is used when you need multiple shared Solr instances.
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -169,6 +190,504 @@ endif::add-copy-button-to-env-var[]
 --
 |boolean
 |`+++true+++`
+
+a| [[quarkus-solr_quarkus-solr-url]] [.property-path]##link:#quarkus-solr_quarkus-solr-url[`+++quarkus.solr.url+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.url+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+One or more Solr URLs, which the client then uses to send HTTP requests to Solr.
+
+These URLS must point to the root Solr path (i.e. "/solr"). If multiple URLs are configured, it is assumed that link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used and these URLs are used to fetch information about the layout and health of the Solr cluster.
+
+If only one URL is defined, the URLs is used to send user-provided requests using `org.apache.solr.client.solrj.impl.HttpJdkSolrClient HttpJdkSolrClient`.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_URL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_URL+++`
+endif::add-copy-button-to-env-var[]
+--
+|list of string
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-solr_quarkus-solr-default-collection]] [.property-path]##link:#quarkus-solr_quarkus-solr-default-collection[`+++quarkus.solr.default-collection+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.default-collection+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Default collection to be used
+
+Most SolrClient methods allow users to specify the collection or core they wish to query, etc. as a String parameter. However, continually specifying this parameter can become tedious, especially for users who always work with the same collection.
+
+Users can avoid this pattern by specifying a "default" collection If specified SolrClients will use this default for making requests whenever a collection or core is needed (and no overriding value is specified)
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_DEFAULT_COLLECTION+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_DEFAULT_COLLECTION+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|
+
+a| [[quarkus-solr_quarkus-solr-http1]] [.property-path]##link:#quarkus-solr_quarkus-solr-http1[`+++quarkus.solr.http1+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.http1+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Should HTTP 1.1 be used instead of HTTP/2?
+
+If not set, HTTP/2 is used by default
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_HTTP1+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_HTTP1+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a| [[quarkus-solr_quarkus-solr-request-timeout]] [.property-path]##link:#quarkus-solr_quarkus-solr-request-timeout[`+++quarkus.solr.request-timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.request-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Request timeout in milliseconds
+
+If not set, idle timeout is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_REQUEST_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_REQUEST_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-solr_quarkus-solr-idle-timeout]] [.property-path]##link:#quarkus-solr_quarkus-solr-idle-timeout[`+++quarkus.solr.idle-timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.idle-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Idle timeout in milliseconds
+
+If not set, `org.apache.solr.client.solrj.impl.SolrHttpConstants++#++DEFAULT_SO_TIMEOUT SolrJ's default value` is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_IDLE_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_IDLE_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-solr_quarkus-solr-connection-timeout]] [.property-path]##link:#quarkus-solr_quarkus-solr-connection-timeout[`+++quarkus.solr.connection-timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.connection-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Connection timeout in milliseconds
+
+If not set, `org.apache.solr.client.solrj.impl.SolrHttpConstants++#++DEFAULT_CONNECT_TIMEOUT SolrJ's default value` is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_CONNECTION_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_CONNECTION_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-solr_quarkus-solr-follow-redirects]] [.property-path]##link:#quarkus-solr_quarkus-solr-follow-redirects[`+++quarkus.solr.follow-redirects+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.follow-redirects+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Should the client follow redirects?
+
+If not set, redirect are not followed
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_FOLLOW_REDIRECTS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_FOLLOW_REDIRECTS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a| [[quarkus-solr_quarkus-solr-max-connections-per-host]] [.property-path]##link:#quarkus-solr_quarkus-solr-max-connections-per-host[`+++quarkus.solr.max-connections-per-host+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.max-connections-per-host+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Maximal number of connections per host
+
+If not set, `org.apache.solr.client.solrj.impl.SolrHttpConstants++#++DEFAULT_MAXCONNECTIONS SolrJ's default value` is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_MAX_CONNECTIONS_PER_HOST+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_MAX_CONNECTIONS_PER_HOST+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-solr_quarkus-solr-basic-auth-username]] [.property-path]##link:#quarkus-solr_quarkus-solr-basic-auth-username[`+++quarkus.solr.basic-auth.username+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.basic-auth.username+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The username
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_BASIC_AUTH_USERNAME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_BASIC_AUTH_USERNAME+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-solr_quarkus-solr-basic-auth-password]] [.property-path]##link:#quarkus-solr_quarkus-solr-basic-auth-password[`+++quarkus.solr.basic-auth.password+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.basic-auth.password+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The password
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_BASIC_AUTH_PASSWORD+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_BASIC_AUTH_PASSWORD+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-solr_quarkus-solr-proxy-host]] [.property-path]##link:#quarkus-solr_quarkus-solr-proxy-host[`+++quarkus.solr.proxy.host+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.proxy.host+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The proxy host
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PROXY_HOST+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PROXY_HOST+++`
+endif::add-copy-button-to-env-var[]
+--
+|string
+|required icon:exclamation-circle[title=Configuration property is required]
+
+a| [[quarkus-solr_quarkus-solr-proxy-port]] [.property-path]##link:#quarkus-solr_quarkus-solr-proxy-port[`+++quarkus.solr.proxy.port+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.proxy.port+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+The proxy port
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PROXY_PORT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PROXY_PORT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|`+++0+++`
+
+a| [[quarkus-solr_quarkus-solr-proxy-socks4]] [.property-path]##link:#quarkus-solr_quarkus-solr-proxy-socks4[`+++quarkus.solr.proxy.socks4+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.proxy.socks4+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Is this a socks4 proxy?
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PROXY_SOCKS4+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PROXY_SOCKS4+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a| [[quarkus-solr_quarkus-solr-proxy-secure]] [.property-path]##link:#quarkus-solr_quarkus-solr-proxy-secure[`+++quarkus.solr.proxy.secure+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.proxy.secure+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Is this proxy using HTTPS
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PROXY_SECURE+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PROXY_SECURE+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a| [[quarkus-solr_quarkus-solr-cloud]] [.property-path]##link:#quarkus-solr_quarkus-solr-cloud[`+++quarkus.solr.cloud+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.cloud+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Force SolrCloud mode
+
+If set, it is assumed that link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used even if only one `url()` is defined
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_CLOUD+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_CLOUD+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|`+++false+++`
+
+a| [[quarkus-solr_quarkus-solr-zk-client-timeout]] [.property-path]##link:#quarkus-solr_quarkus-solr-zk-client-timeout[`+++quarkus.solr.zk-client-timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.zk-client-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Zookeeper client timeout in milliseconds
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used even. If not set, `org.apache.solr.client.solrj.impl.SolrZkClientTimeout++#++DEFAULT_ZK_CLIENT_TIMEOUT SolrJ's default value` is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_ZK_CLIENT_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_ZK_CLIENT_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-solr_quarkus-solr-zk-connect-timeout]] [.property-path]##link:#quarkus-solr_quarkus-solr-zk-connect-timeout[`+++quarkus.solr.zk-connect-timeout+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.zk-connect-timeout+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Zookeeper connection timeout in milliseconds
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. If not set, `org.apache.solr.client.solrj.impl.SolrZkClientTimeout++#++DEFAULT_ZK_CONNECT_TIMEOUT SolrJ's default value` is used
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_ZK_CONNECT_TIMEOUT+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_ZK_CONNECT_TIMEOUT+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-solr_quarkus-solr-can-use-zk-ac-ls]] [.property-path]##link:#quarkus-solr_quarkus-solr-can-use-zk-ac-ls[`+++quarkus.solr.can-use-zk-ac-ls+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.can-use-zk-ac-ls+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Can Zookeepers ACL be used
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. See link:https://solr.apache.org/guide/solr/latest/deployment-guide/zookeeper-access-control.html#about-zookeeper-acls[documentation] for details. If not set,SolrJ's default value (true) is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_CAN_USE_ZK_AC_LS+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_CAN_USE_ZK_AC_LS+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
+
+a| [[quarkus-solr_quarkus-solr-collection-cache-ttl]] [.property-path]##link:#quarkus-solr_quarkus-solr-collection-cache-ttl[`+++quarkus.solr.collection-cache-ttl+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.collection-cache-ttl+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Cache ttl for cached objects in seconds
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. If not set,SolrJ's default value (60s) is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_COLLECTION_CACHE_TTL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_COLLECTION_CACHE_TTL+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-solr_quarkus-solr-parallel-cache-refreshes]] [.property-path]##link:#quarkus-solr_quarkus-solr-parallel-cache-refreshes[`+++quarkus.solr.parallel-cache-refreshes+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.parallel-cache-refreshes+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Number of parallel collection state refresh operations to run in parallel
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. If not set,SolrJ's default value (5) is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PARALLEL_CACHE_REFRESHES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PARALLEL_CACHE_REFRESHES+++`
+endif::add-copy-button-to-env-var[]
+--
+|int
+|
+
+a| [[quarkus-solr_quarkus-solr-retry-expiry-time]] [.property-path]##link:#quarkus-solr_quarkus-solr-retry-expiry-time[`+++quarkus.solr.retry-expiry-time+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.retry-expiry-time+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Time to wait to re-fetch the state after getting the same state version from Zookeeper in milliseconds
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. If not set,SolrJ's default value (3000) is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_RETRY_EXPIRY_TIME+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_RETRY_EXPIRY_TIME+++`
+endif::add-copy-button-to-env-var[]
+--
+|long
+|
+
+a| [[quarkus-solr_quarkus-solr-parallel-updates]] [.property-path]##link:#quarkus-solr_quarkus-solr-parallel-updates[`+++quarkus.solr.parallel-updates+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++quarkus.solr.parallel-updates+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Should shard updates be sent in parallel
+
+Only relevant if link:https://solr.apache.org/guide/solr/latest/deployment-guide/cluster-types.html#solrcloud-mode[Solr Cloud Mode] is used. When an UpdateRequest affects multiple shards, CloudSolrClient splits it up and sends a request to each affected shard. This setting chooses whether those sub-requests are sent serially or in parallel. If not set,SolrJ's default value ('true') is used.
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++QUARKUS_SOLR_PARALLEL_UPDATES+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++QUARKUS_SOLR_PARALLEL_UPDATES+++`
+endif::add-copy-button-to-env-var[]
+--
+|boolean
+|
 
 |===
 
