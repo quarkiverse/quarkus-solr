@@ -59,6 +59,10 @@
             <artifactId>quarkus-rest-jsonb-deployment</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-context-propagation-deployment</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
