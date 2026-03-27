@@ -1,10 +1,15 @@
 = Quarkus Solr
 
-//TODO: Add documentation here
+https://solr.apache.org/[Apache Solr] is the blazing-fast, open source, multi-modal search platform built on the full-text, vector, and geospatial search capabilities of Apache Lucene.
+This extension provides integration with Solr, allowing you to easily add search capabilities to your Quarkus application.
+It provides the following features:
+
+* Solr as a dev-service for local development
+* Provide https://solr.apache.org/guide/solrj.html[SolrJ] beans for interacting with Solr
+* Native compilation support
+* Integration with Quarkus observability stack (health, metrics, logging)
 
 include::./includes/attributes.adoc[]
-
-TIP: Describe what the extension does here.
 
 == Installation
 
@@ -21,9 +26,44 @@ For instance, with Maven, add the following dependency to your POM file:
 </dependency>
 ----
 
+== Use SolrJ in your application
+
+You can inject the `SolrClient` bean provided by the extension to interact with Solr.
+For example:
+
+[source,java]
+----
+import org.apache.solr.client.solrj.SolrClient;
+
+@ApplicationScoped
+public class SolrService {
+    @Inject
+    SolrClient solrClient;
+
+    public SolrDocumentList query(String query) throws SolrServerException, IOException {
+        SolrQuery solrQuery = new SolrQuery();
+        solrQuery.setQuery(query);
+        return solrClient.query("collectionName", solrQuery).getResults();
+    }
+}
+----
+
+Check the https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html[SolrJ documentation] for more details on how to use the `SolrClient` to https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#querying-in-solrj[Query] and https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#indexing-in-solrj[Index] documents in Solr.
+
+== Dev Services for Solr
+
+The extension provides a https://quarkus.io/guides/dev-services[dev service] for Solr.
+This allows you to easily run a Solr instance in a container during development.
+
+By default, the dev service will start a Solr instance with a single collection named _dummy_.
+You can customize the dev service using <<Extension Configuration Reference, configuration properties>>.
+
+== Observability
+
+All interactions with Solr are logged at the DEBUG level, so you can enable DEBUG logging for the `io.quarkiverse.solr` package to see the details of the interactions.
+If you add https://quarkus.io/guides/smallrye-health[quarkus-smallrye-health] or https://quarkus.io/guides/telemetry-micrometer[quarkus-micrometer-registry-prometheus] to your application, an health check and metrics will be automatically provided for the Solr client.
+
 [[extension-configuration-reference]]
 == Extension Configuration Reference
-
-TIP: Remove this section if you don't have Quarkus configuration properties in your extension.
 
 include::includes/quarkus-solr.adoc[leveloffset=+1,opts=optional]
