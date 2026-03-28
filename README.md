@@ -60,11 +60,18 @@ guidelines.
 
 Quarkus Solr has only been tested with Solr 10.0.0 and Quarkus 3.34.0, but other versions of Solr and Quarkus should
 work as well.
-If you encounter any issues, please report them in the issue tracker.
+If you encounter any issues, please [report them in the issue](https://github.com/quarkiverse/quarkus-solr/issues)
+tracker.
 
 ## Contributing
 
-Feel free to contribute to this project by submitting issues or pull requests.
+Feel free to contribute to this project by [submitting issues](https://github.com/quarkiverse/quarkus-solr/issues) or
+pull requests.
+
+## Changelog
+
+Changelog is available in [GitHub](
+https://github.com/quarkiverse/quarkus-solr/releases)
 
 ## License
 
