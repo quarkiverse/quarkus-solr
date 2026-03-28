@@ -130,7 +130,7 @@ endif::add-copy-button-to-config-props[]
 --
 Custom configuration to be used. Must be a directory on the classpath containing at least a solrconfig.xml
 
-If not set, default configuration of Solr docker container is used
+If not set, default configuration of SOLR docker container is used
 
 
 ifdef::add-copy-button-to-env-var[]
@@ -153,7 +153,7 @@ endif::add-copy-button-to-config-props[]
 --
 The value of the label attached to the started container. This property is used when `shared` is set to `true`. In this case, before starting a container, Dev Services looks for a container with the `quarkus-dev-service-solr` label set to the configured value. If found, it will use this container instead of starting a new one. Otherwise, it starts a new container with the `quarkus-dev-service-solr` label set to the specified value.
 
-This property is used when you need multiple shared Solr instances.
+This property is used when you need multiple shared Vault instances.
 
 
 ifdef::add-copy-button-to-env-var[]

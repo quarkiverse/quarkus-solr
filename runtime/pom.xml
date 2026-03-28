@@ -9,6 +9,7 @@
     </parent>
     <artifactId>quarkus-solr</artifactId>
     <name>Quarkus Solr - Runtime</name>
+    <description>Integrate Apache Solr into your Quarkus application</description>
 
     <dependencies>
         <dependency>
