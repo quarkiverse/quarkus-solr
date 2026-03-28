@@ -3,10 +3,13 @@ description: Allows your application to interact with Solr with simple high-leve
 metadata:
   keywords:
     - solr
-  #  guide: https://docs.quarkiverse.io/quarkus-solr/dev/ # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
+    - search
+    - solrJ
+  guide: https://docs.quarkiverse.io/quarkus-solr/dev/
   categories:
     - "Integration"
     - "Web"
     - "Search"
     - "Solr"
-  status: "preview"
+  config:
+    - "quarkus.solr."
