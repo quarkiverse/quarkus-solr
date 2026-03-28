@@ -1,0 +1,29 @@
+= Quarkus Solr Dev Service
+
+The extension provides a https://quarkus.io/guides/dev-services[dev service] for Solr.
+This allows you to easily run a Solr instance in a container during development.
+
+== Image
+
+By default, the dev service will use the `solr` image from Docker Hub, using the same version as the integrated SolrJ version.
+You can customize the image used by setting the `quarkus.solr.devservices.image-name` property.
+
+[source,properties]
+----
+quarkus.solr.devservices.image-name=custom-solr-image:latest
+----
+
+== Configuration
+
+By default, the dev service will start a Solr instance with a single collection named _dummy_ using the  https://github.com/apache/solr/tree/main/solr/server/solr/configsets/_default/conf[default Solr Configuration and schema].
+You can customize the configuration by providing your own configuration directory and setting the `quarkus.solr.devservices.configuration` property and the collection name with the `quarkus.solr.devservices.collection` property.
+
+[source,properties]
+----
+quarkus.solr.devservices.configuration=/path/to/your/configuration
+quarkus.solr.devservices.collection=your-collection-name
+----
+
+The configuration directory must contain the https://solr.apache.org/guide/solr/latest/configuration-guide/configuring-solrconfig-xml.html[solrconfig.xml] and all referenced files like `schema.xml`.
+
+A new collection with the given name and configuration will be created when the dev service starts.

@@ -8,17 +8,10 @@ Integrates [Apache Solr](https://solr.apache.org/) into Quarkus for JDK and nati
 
 ## Features
 
-Quarkus Solr provides the following features
-
 - Solr as a dev-service for local development
 - Provide [SolrJ](https://solr.apache.org/guide/solrj.html) beans for interacting with Solr
 - Native compilation support
 - Integration with Quarkus observability stack (health, metrics, logging)
-
-## Documentation
-
-Check the [documentation](https://docs.quarkiverse.io/quarkus-solr/dev/index.html) for detailed
-information and usage guidelines.
 
 ## Getting Started
 
@@ -51,16 +44,17 @@ public class SolrService {
 }
 ```
 
-For dev-mode, a Solr instance will be automatically started and configured with a default collection called _dummy_.
-Check the [documentation](https://docs.quarkiverse.io/quarkus-solr/dev/index.html)  for more details on how to customize
-the dev-service configuration.
-
-For non-dev-mode, you can configure the Solr client to connect to your Solr instance using the following properties:
+For dev-mode, a Solr instance will be automatically started and configured with a default collection called _dummy_. For
+non-dev-mode, you have to configure the Solr client using the following property:
 
 ```properties
 quarkus.solr.url=http://localhost:8983/solr
-quarkus.solr.default-collection=collectionName
 ```
+
+## Documentation
+
+Check the [documentation](https://docs.quarkiverse.io/quarkus-solr/dev/index.html) for detailed information and usage
+guidelines.
 
 ## Compatibility
 
