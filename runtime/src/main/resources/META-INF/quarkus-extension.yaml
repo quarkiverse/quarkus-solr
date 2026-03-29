@@ -1,15 +1,17 @@
 name: Solr
 description: Allows your application to interact with Solr with simple high-level methods.
 metadata:
+  short-name: "solr"
   keywords:
     - solr
     - search
     - solrJ
   guide: https://docs.quarkiverse.io/quarkus-solr/dev/
+  icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-solr/main/deployment/src/main/resources/dev-ui/solr.png"
+  status: "stable"
   categories:
     - "Integration"
     - "Web"
     - "Search"
-    - "Solr"
   config:
     - "quarkus.solr."
