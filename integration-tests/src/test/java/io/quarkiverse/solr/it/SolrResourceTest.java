@@ -22,7 +22,10 @@ class SolrResourceTest {
                 .when().get("/solr")
                 .then()
                 .statusCode(200)
-                .body(is("[{\"id\":\"1\",\"name\":\"Test Document\",\"description\":\"This is a test document\"}]"));
+                .body("size()", is(1))
+                .body("[0].id", is("1"))
+                .body("[0].name", is("Test Document"))
+                .body("[0].description", is("This is a test document"));
     }
 
     @Test
