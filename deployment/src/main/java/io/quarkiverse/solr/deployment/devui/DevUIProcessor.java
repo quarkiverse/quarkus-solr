@@ -1,5 +1,6 @@
 package io.quarkiverse.solr.deployment.devui;
 
+import io.quarkiverse.solr.deployment.SolrBeanInformationBuildItem;
 import io.quarkiverse.solr.runtime.devui.SolrDevJsonRpcService;
 import io.quarkus.deployment.IsDevelopment;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -17,7 +18,7 @@ public class DevUIProcessor {
     private static final String SOLR_LINK = "https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html";
 
     @BuildStep
-    public CardPageBuildItem createCard() {
+    public CardPageBuildItem createCard(SolrBeanInformationBuildItem solrBeanInformationBuildItem) {
         CardPageBuildItem cardPageBuildItem = new CardPageBuildItem();
         cardPageBuildItem.addLibraryVersion(SOLR_GROUPID, SOLR_ARTIFACTID, SOLR_NAME, SOLR_LINK);
         cardPageBuildItem.setLogo(SOLR_LOGO, SOLR_LOGO);
@@ -25,6 +26,8 @@ public class DevUIProcessor {
                 .icon("font-awesome-solid:diagram-project")
                 .dynamicUrlJsonRPCMethodName("getSolrAdminUrl")
                 .doNotEmbed());
+        cardPageBuildItem.addBuildTimeData("solrBeans", solrBeanInformationBuildItem.getSolrBeans(),
+                "A map of Java class names to their fields and corresponding Solr field names", true);
         return cardPageBuildItem;
     }
 
