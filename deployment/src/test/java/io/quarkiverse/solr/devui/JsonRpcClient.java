@@ -14,6 +14,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
 
+import jakarta.json.JsonValue;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,11 +42,11 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         assertTrue(countDownLatch.await(15, TimeUnit.SECONDS), "No response received within timeout");
     }
 
-    public JsonObject send(String method) throws InterruptedException {
+    public JsonValue send(String method) throws InterruptedException {
         return send(method, Map.of());
     }
 
-    public JsonObject send(String method, Map<String, String> params) throws InterruptedException {
+    public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
         countDownLatch = new CountDownLatch(1);
         response = new AtomicReference<>();
         throwable = new AtomicReference<>();
@@ -69,13 +70,13 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         return message.toString();
     }
 
-    private JsonObject getResponse(String responseStr) {
+    private JsonValue getResponse(String responseStr) {
         try (JsonReader reader = Json.createReader(new StringReader(responseStr))) {
             JsonObject obj = reader.readObject();
             if (obj.containsKey("error")) {
                 throw new RuntimeException("Error response received: " + obj.getJsonObject("error").getString("message"));
             }
-            return obj.getJsonObject("result").getJsonObject("object");
+            return obj.getJsonObject("result").get("object");
         }
     }
 

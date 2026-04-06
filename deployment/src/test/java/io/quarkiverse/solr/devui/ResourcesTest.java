@@ -25,13 +25,13 @@ class ResourcesTest {
     @Test
     void getResource() throws Exception {
         try (JsonRpcClient client = new JsonRpcClient()) {
-            JsonObject resource = client.send("resources_list").getJsonArray("resources").stream()
+            JsonObject resource = client.send("resources_list").asJsonObject().getJsonArray("resources").stream()
                     .map(JsonValue::asJsonObject)
                     .filter(r -> r.getString("name").equals("quarkus-solr_solrBeans"))
                     .findFirst()
                     .orElseThrow();
             String uri = resource.getString("uri");
-            JsonObject beans = client.send("resources_read", Map.of("uri", uri));
+            JsonObject beans = client.send("resources_read", Map.of("uri", uri)).asJsonObject();
             String solrBeansStr = beans.getJsonArray("contents").getJsonObject(0).getString("text");
             JsonObject solrBeans = Json.createReader(new StringReader(solrBeansStr)).readObject();
             JsonObject expected = Json.createObjectBuilder()
