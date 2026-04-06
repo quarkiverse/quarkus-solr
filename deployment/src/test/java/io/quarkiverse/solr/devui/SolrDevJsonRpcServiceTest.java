@@ -2,18 +2,20 @@ package io.quarkiverse.solr.devui;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusDevModeTest;
 
 class SolrDevJsonRpcServiceTest {
+
     @RegisterExtension
-    static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
+    static final QuarkusDevModeTest test = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     @Test
-    void missing() throws Exception {
-        //TODO: Implement tests for all functions in SolrDevJsonRpcService
+    void toImplement() {
+        Assertions.fail("Implement tests");
     }
 }
