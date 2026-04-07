@@ -94,6 +94,7 @@
             </activation>
             <modules>
                 <module>integration-tests</module>
+                <module>integration-tests-no-ext</module>
             </modules>
         </profile>
     </profiles>

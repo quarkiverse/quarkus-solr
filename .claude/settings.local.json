@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /tmp)",
+      "Bash(jar tf:*)",
+      "Bash(jar xf:*)",
+      "Bash(javap -p *)",
+      "Bash(xargs -I{} sh -c 'jar tf {} 2>/dev/null | grep -l * && echo {}')"
+    ]
+  }
+}

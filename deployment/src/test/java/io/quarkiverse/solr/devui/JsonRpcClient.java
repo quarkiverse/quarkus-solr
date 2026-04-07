@@ -13,8 +13,8 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
-
 import jakarta.json.JsonValue;
+
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.jetbrains.annotations.NotNull;
 
