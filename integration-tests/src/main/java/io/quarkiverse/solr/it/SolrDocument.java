@@ -17,7 +17,7 @@ public class SolrDocument {
     public SolrDocument() {
     }
 
-    @SuppressWarnings("unused") //Used internally by jackson
+    @SuppressWarnings("unused") //Used internally by Jackson
     public SolrDocument(String id, String name, String description) {
         this.id = id;
         this.name = name;

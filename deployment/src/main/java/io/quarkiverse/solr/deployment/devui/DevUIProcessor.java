@@ -27,7 +27,7 @@ public class DevUIProcessor {
                 .dynamicUrlJsonRPCMethodName("getSolrAdminUrl")
                 .doNotEmbed());
         cardPageBuildItem.addBuildTimeData("solrBeans", solrBeanInformationBuildItem.getSolrBeans(),
-                "A map of Java class names to their fields and corresponding Solr field names", true);
+                "A map of Java class names to their fields and corresponding Solr field names.", true);
         return cardPageBuildItem;
     }
 

@@ -31,7 +31,7 @@ class SolrResourceTest {
     @Test
     void queryWithoutResult() {
         given()
-                .when().get("/solr?query=notpresent")
+                .when().get("/solr?query=not-present")
                 .then()
                 .statusCode(200)
                 .body(is("[]"));

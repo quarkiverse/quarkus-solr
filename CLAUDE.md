@@ -43,17 +43,17 @@ standard Quarkus extension architecture with separate `deployment` and `runtime`
 - `DevServiceProcessor` — Starts Solr via Docker (TestContainers) in dev/test mode
 - `SolrDevContainer` — TestContainers wrapper for the Solr Docker image
 - `DevUIProcessor` — Registers Dev UI cards and JSON-RPC service
-- `ConfigurationFolderZipper` — Zips custom Solr config dirs for upload to dev container
+- `ConfigurationFolderZipper` — Zips custom Solr config dirs for an upload to the dev container.
 
-**`integration-tests/`** — Example app + tests with health, metrics, and REST extensions:
+**`integration-tests/`** — Example app + tests with health, metrics and REST extensions:
 
 - `SolrResource` — JAX-RS endpoints (`POST /solr`, `GET /solr`) demonstrating injection of `SolrClient`
 - `SolrResourceTest` / `SolrResourceIT` — JVM and native image test variants using rest-assured
 
-**`integration-tests-no-ext/`** — Minimal smoke test with only `quarkus-solr` (no REST, health, or metrics extensions):
+**`integration-tests-no-ext/`** — Minimal smoke test with only `quarkus-solr` (no REST, health or metrics extensions):
 
 - `SolrStartupTest` — Verifies the app starts and that no extra extensions (SmallRye Health, Micrometer, RESTEasy) are
-  on the classpath
+  on the classpath.
 
 ### Key Design Patterns
 
@@ -82,8 +82,8 @@ standard Quarkus extension architecture with separate `deployment` and `runtime`
 - Unit/extension tests in `deployment/src/test/` use `QuarkusUnitTest` with `@RegisterExtension`
 - Integration tests in `integration-tests/src/test/` use `@QuarkusTest` (JVM) and `@QuarkusIntegrationTest` (native)
 - Minimal smoke test in `integration-tests-no-ext/src/test/` uses `@QuarkusTest` with no extra extensions on the
-  classpath
-- Dev services start a real Solr Docker container during tests — no mocking of SolrClient
+  classpath.
+- Dev services start a real Solr Docker container during tests — no mocking of SolrClient.
 - The integration test app configures a custom Solr schema via
   `quarkus.solr.devservices.configuration=src/main/resources/solrconfig`
 - The no-ext integration test uses default dev service config (no custom schema)

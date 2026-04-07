@@ -66,10 +66,10 @@ public class SolrDevJsonRpcService {
         return schemaRequest.process(solrClient, collection).getSchemaRepresentation();
     }
 
-    @JsonRpcDescription("Index documents from json String into Solr collection")
+    @JsonRpcDescription("Index documents from a JSON string into the solr collection")
     @DevMCPEnableByDefault
     public UpdateResponse indexJsonDocuments(@JsonRpcDescription("Solr collection to index into") String collection,
-            @JsonRpcDescription("Documents to index, as json") String json) throws SolrServerException, IOException {
+            @JsonRpcDescription("Documents to index, as JSON") String json) throws SolrServerException, IOException {
         for (SolrInputDocument doc : parseInputDocuments(json)) {
             Log.info(() -> "Adding document to collection " + collection + ": " + doc);
             solrClient.add(collection, doc);
@@ -77,11 +77,11 @@ public class SolrDevJsonRpcService {
         return solrClient.commit(collection);
     }
 
-    @JsonRpcDescription("Search specified Solr collection with query, optional filters, facets, sorting, and pagination")
+    @JsonRpcDescription("Search specified Solr collection with a query, optional filters, facets, sorting and pagination.")
     @DevMCPEnableByDefault
     public SolrDocumentList search(@JsonRpcDescription("Solr collection to query") String collection,
             @JsonRpcDescription("Solr q parameter. If none specified defaults to \"*:*\"") String query,
-            @JsonRpcDescription("Solr fq parameter. Einter a string (if just one value) or a JSON-Array of strings if multiple values") String fq,
+            @JsonRpcDescription("Solr fq parameter. Either a string (if just one value), or a JSON-Array of strings if multiple values.") String fq,
             @JsonRpcDescription("Solr sort parameter and their order. A JSON object with field names as keys and sort order (asc/desc) as values\");") String sortClauses,
             @JsonRpcDescription("Starting offset for pagination") Integer start,
             @JsonRpcDescription("Number of rows to return") Integer rows) throws SolrServerException, IOException {
@@ -108,7 +108,7 @@ public class SolrDevJsonRpcService {
             if (json instanceof JsonArray jsonArray)
                 return parseInputDocuments(jsonArray);
         }
-        throw new RuntimeException("Invalid JSON input for Solr document. Must be a JSON object or an array of JSON objects.");
+        throw new RuntimeException("Invalid JSON input for Solr document. Must be a JSON object, or an array of JSON objects.");
     }
 
     private SolrInputDocument parseInputDocument(JsonObject jsonObject) {
@@ -150,7 +150,7 @@ public class SolrDevJsonRpcService {
                         .map(JsonValue::toString)
                         .toArray(String[]::new);
             }
-            throw new RuntimeException("Invalid JSON input for fq query. Must be a array of strings");
+            throw new RuntimeException("Invalid JSON input for fq query. Must be an array of strings.");
         } catch (JsonException e) {
             //This is not json, so just use the full query
             return new String[] { input };
@@ -167,6 +167,6 @@ public class SolrDevJsonRpcService {
             }
         }
         throw new RuntimeException(
-                "Invalid JSON input for sort query. Must be a object with field names as keys and sort order (asc/desc) as values");
+                "Invalid JSON input for sort query. Must be an object with field names as keys and sort order (asc/desc) as values.");
     }
 }

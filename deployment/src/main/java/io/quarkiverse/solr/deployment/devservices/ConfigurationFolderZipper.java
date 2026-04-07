@@ -16,7 +16,7 @@ import org.jspecify.annotations.NonNull;
 
 public class ConfigurationFolderZipper {
     private static final String CONFIG_PROPERTY = "quarkus.solr.devservices.configuration";
-    private static final String ERROR_MSG = "Could not read configuration directory '%s'. Please make sure %s points to a valid folder";
+    private static final String ERROR_MSG = "Could not read configuration directory '%s'. Please make sure %s points to a valid folder.";
 
     private ConfigurationFolderZipper() {
     }
