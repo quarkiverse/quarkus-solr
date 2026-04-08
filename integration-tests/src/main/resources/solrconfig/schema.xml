@@ -2,7 +2,8 @@
 <schema name="default-config" version="1.7">
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
     <field name="_version_" type="plong" indexed="false" stored="false"/>
-    <field name="firstName" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="_text_" type="text_general" indexed="true" multiValued="true"/>
+    <field name="firstName" type="string" indexed="true" stored="true"/>
     <field name="lastName" type="string" indexed="true" stored="true"/>
     <field name="description" type="text_general" indexed="true" stored="true"/>
 
@@ -26,5 +27,9 @@
             <filter name="porterStem"/>
         </analyzer>
     </fieldType>
+
+    <copyField source="firstName" dest="_text_"/>
+    <copyField source="lastName" dest="_text_"/>
+    <copyField source="description" dest="_text_"/>
 </schema>
 

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
+import java.util.UUID;
 
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
@@ -26,6 +27,10 @@ class SolrDevJsonRpcServiceTest {
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
 
     private static final String COLLECTION = "dummy";
+
+    private static String randomId() {
+        return UUID.randomUUID().toString();
+    }
 
     @Test
     void getSolrAdminUrl() throws Exception {
@@ -57,7 +62,7 @@ class SolrDevJsonRpcServiceTest {
     @Test
     void indexSingleJsonDocument() throws Exception {
         try (JsonRpcClient client = new JsonRpcClient()) {
-            String json = "{\"id\": \"index-single-1\"}";
+            String json = "{\"id\": \"" + randomId() + "\", \"description_s\": \"index single document\"}";
             JsonObject result = client.send("quarkus-solr_indexJsonDocuments",
                     Map.of("collection", COLLECTION, "json", json)).asJsonObject();
             assertEquals(0, result.getInt("status"));
@@ -67,7 +72,8 @@ class SolrDevJsonRpcServiceTest {
     @Test
     void indexMultipleJsonDocuments() throws Exception {
         try (JsonRpcClient client = new JsonRpcClient()) {
-            String json = "[{\"id\": \"index-multi-1\"}, {\"id\": \"index-multi-2\"}]";
+            String json = "[{\"id\": \"" + randomId() + "\", \"description_s\": \"index multiple first\"}, "
+                    + "{\"id\": \"" + randomId() + "\", \"description_s\": \"index multiple second\"}]";
             JsonObject result = client.send("quarkus-solr_indexJsonDocuments",
                     Map.of("collection", COLLECTION, "json", json)).asJsonObject();
             assertEquals(0, result.getInt("status"));
@@ -76,59 +82,67 @@ class SolrDevJsonRpcServiceTest {
 
     @Test
     void search() throws Exception {
-        String docId = "search-basic-1";
+        String description = "search-basic-" + randomId();
         try (JsonRpcClient client = new JsonRpcClient()) {
             client.send("quarkus-solr_indexJsonDocuments",
-                    Map.of("collection", COLLECTION, "json", "{\"id\": \"" + docId + "\"}"));
+                    Map.of("collection", COLLECTION, "json",
+                            "{\"id\": \"" + randomId() + "\", \"description_s\": \"" + description + "\"}"));
         }
         try (JsonRpcClient client = new JsonRpcClient()) {
             JsonArray result = client.send("quarkus-solr_search",
-                    Map.of("collection", COLLECTION, "query", "id:" + docId)).asJsonArray();
+                    Map.of("collection", COLLECTION, "query", "description_s:" + description)).asJsonArray();
             assertEquals(1, result.size());
-            assertEquals(docId, result.getJsonObject(0).getString("id"));
+            assertEquals(description, result.getJsonObject(0).getString("description_s"));
         }
     }
 
     @Test
     void searchWithFilterQuery() throws Exception {
-        String docId = "search-fq-1";
+        String description = "search-filter-" + randomId();
         try (JsonRpcClient client = new JsonRpcClient()) {
             client.send("quarkus-solr_indexJsonDocuments",
-                    Map.of("collection", COLLECTION, "json", "{\"id\": \"" + docId + "\"}"));
+                    Map.of("collection", COLLECTION, "json",
+                            "{\"id\": \"" + randomId() + "\", \"description_s\": \"" + description + "\"}"));
         }
         try (JsonRpcClient client = new JsonRpcClient()) {
             JsonArray result = client.send("quarkus-solr_search",
-                    Map.of("collection", COLLECTION, "query", "*:*", "fq", "id:" + docId)).asJsonArray();
+                    Map.of("collection", COLLECTION, "query", "*:*", "fq", "description_s:" + description)).asJsonArray();
             assertEquals(1, result.size());
-            assertEquals(docId, result.getJsonObject(0).getString("id"));
+            assertEquals(description, result.getJsonObject(0).getString("description_s"));
         }
     }
 
     @Test
     void searchWithSortClause() throws Exception {
-        String docId = "0000-1";
+        String prefix = "sortasc-" + randomId();
         try (JsonRpcClient client = new JsonRpcClient()) {
-            client.send("quarkus-solr_indexJsonDocuments",
-                    Map.of("collection", COLLECTION, "json", "{\"id\": \"" + docId + "\"}"));
+            String json = "[{\"id\": \"" + randomId() + "\", \"description_s\": \"" + prefix + "-aaa\"}, "
+                    + "{\"id\": \"" + randomId() + "\", \"description_s\": \"" + prefix + "-zzz\"}]";
+            client.send("quarkus-solr_indexJsonDocuments", Map.of("collection", COLLECTION, "json", json));
         }
         try (JsonRpcClient client = new JsonRpcClient()) {
             JsonArray result = client.send("quarkus-solr_search",
-                    Map.of("collection", COLLECTION, "query", "*:*", "sortClauses", "{\"id\": \"asc\"}")).asJsonArray();
-            assertEquals(docId, result.getJsonObject(0).getString("id"));
+                    Map.of("collection", COLLECTION, "query", "*:*", "fq", "description_s:" + prefix + "-*",
+                            "sortClauses", "{\"description_s\": \"asc\"}"))
+                    .asJsonArray();
+            assertEquals(prefix + "-aaa", result.getJsonObject(0).getString("description_s"));
         }
     }
 
     @Test
     void searchWithSortClauseDesc() throws Exception {
-        String docId = "ZZZZZZZZZZZZ-1";
+        String prefix = "sortdesc-" + randomId();
         try (JsonRpcClient client = new JsonRpcClient()) {
-            client.send("quarkus-solr_indexJsonDocuments",
-                    Map.of("collection", COLLECTION, "json", "{\"id\": \"" + docId + "\"}"));
+            String json = "[{\"id\": \"" + randomId() + "\", \"description_s\": \"" + prefix + "-aaa\"}, "
+                    + "{\"id\": \"" + randomId() + "\", \"description_s\": \"" + prefix + "-zzz\"}]";
+            client.send("quarkus-solr_indexJsonDocuments", Map.of("collection", COLLECTION, "json", json));
         }
         try (JsonRpcClient client = new JsonRpcClient()) {
             JsonArray result = client.send("quarkus-solr_search",
-                    Map.of("collection", COLLECTION, "query", "*:*", "sortClauses", "{\"id\": \"desc\"}")).asJsonArray();
-            assertEquals(docId, result.getJsonObject(0).getString("id"));
+                    Map.of("collection", COLLECTION, "query", "*:*", "fq", "description_s:" + prefix + "-*",
+                            "sortClauses", "{\"description_s\": \"desc\"}"))
+                    .asJsonArray();
+            assertEquals(prefix + "-zzz", result.getJsonObject(0).getString("description_s"));
         }
     }
 
