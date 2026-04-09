@@ -1,11 +1,14 @@
 package io.quarkiverse.solr.devui;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.Closeable;
 import java.io.StringReader;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,19 +31,17 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
     private final WebSocket webSocket;
     private final OkHttpClient client;
     private int id = 0;
-    private int expectedId = -1;
-    private CountDownLatch countDownLatch;
-    private AtomicReference<String> response;
-    private AtomicReference<Throwable> throwable;
+    private final CountDownLatch connectionLatch = new CountDownLatch(1);
+    private final BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
+    private final AtomicReference<Throwable> failure = new AtomicReference<>();
 
     public JsonRpcClient() throws InterruptedException {
         String port = ConfigProvider.getConfig().getValue("quarkus.http.test-port", String.class);
         String url = "ws://localhost:" + port + "/q/dev-ui/json-rpc-ws";
         Request request = new Request.Builder().url(url).build();
         client = new OkHttpClient();
-        countDownLatch = new CountDownLatch(1);
         webSocket = client.newWebSocket(request, this);
-        assertTrue(countDownLatch.await(15, TimeUnit.SECONDS), "No response received within timeout");
+        assertTrue(connectionLatch.await(15, TimeUnit.SECONDS), "WebSocket connection not opened within timeout");
     }
 
     public JsonValue send(String method) throws InterruptedException {
@@ -48,15 +49,40 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
     }
 
     public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
-        countDownLatch = new CountDownLatch(1);
-        response = new AtomicReference<>();
-        throwable = new AtomicReference<>();
-        expectedId = id;
+        messageQueue.clear();
         webSocket.send(createMessageObject(method, params));
-        assertTrue(countDownLatch.await(15, TimeUnit.SECONDS), "No response received within timeout");
-        if (throwable.get() != null)
-            throw new RuntimeException("WebSocket communication failed", throwable.get());
-        return getResponse(response.get());
+        long deadline = System.currentTimeMillis() + 15_000;
+        while (System.currentTimeMillis() < deadline) {
+            if (failure.get() != null)
+                throw new RuntimeException("WebSocket communication failed", failure.get());
+            String text = messageQueue.poll(100, TimeUnit.MILLISECONDS);
+            if (text == null)
+                continue;
+            JsonValue result = extractResult(text);
+            if (result != null)
+                return result;
+        }
+        throw new AssertionError("No response received within timeout for method: " + method);
+    }
+
+    /**
+     * Returns the result object from a JSON-RPC response, or null if the message should be skipped
+     * (e.g. server push notifications, acks without data).
+     */
+    private JsonValue extractResult(String text) {
+        try (JsonReader reader = Json.createReader(new StringReader(text))) {
+            JsonObject obj = reader.readObject();
+            if (obj.containsKey("error")) {
+                throw new RuntimeException("Error response received: " + obj.getJsonObject("error").getString("message"));
+            }
+            JsonObject result = obj.getJsonObject("result");
+            if (result == null || !result.containsKey("object")) {
+                return null; // ack or push without data, skip
+            }
+            JsonValue resultObj = result.get("object");
+            assertNotNull(resultObj, "Response did not include result object, it was " + obj);
+            return resultObj;
+        }
     }
 
     private String createMessageObject(String method, Map<String, String> params) {
@@ -72,49 +98,19 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         return message.toString();
     }
 
-    private JsonValue getResponse(String responseStr) {
-        try (JsonReader reader = Json.createReader(new StringReader(responseStr))) {
-            JsonObject obj = reader.readObject();
-            if (obj.containsKey("error")) {
-                throw new RuntimeException("Error response received: " + obj.getJsonObject("error").getString("message"));
-            }
-            JsonObject result = obj.getJsonObject("result");
-            if (result == null) {
-                throw new RuntimeException("Response did not include result, it was " + obj);
-            }
-            JsonValue resultObj = result.get("object");
-            if (resultObj == null) {
-                throw new RuntimeException("Response did not include result object, it was " + obj);
-            }
-            return resultObj;
-        }
-    }
-
     @Override
     public void onOpen(@NotNull WebSocket webSocket, @NotNull Response res) {
-        countDownLatch.countDown();
+        connectionLatch.countDown();
     }
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-        try (JsonReader reader = Json.createReader(new StringReader(text))) {
-            JsonObject obj = reader.readObject();
-            if (!obj.containsKey("id") || obj.getInt("id") != expectedId) {
-                return; // server push notification or stale response — ignore
-            }
-        } catch (Exception e) {
-            throwable.set(e);
-            countDownLatch.countDown();
-            return;
-        }
-        response.set(text);
-        countDownLatch.countDown();
+        messageQueue.offer(text);
     }
 
     @Override
     public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response res) {
-        throwable.set(t);
-        countDownLatch.countDown();
+        failure.set(t);
     }
 
     @Override
