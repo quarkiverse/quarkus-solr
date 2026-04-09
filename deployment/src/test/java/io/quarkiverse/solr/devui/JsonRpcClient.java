@@ -52,17 +52,19 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         messageQueue.clear();
         webSocket.send(createMessageObject(method, params));
         long deadline = System.currentTimeMillis() + 15_000;
+        java.util.List<String> received = new java.util.ArrayList<>();
         while (System.currentTimeMillis() < deadline) {
             if (failure.get() != null)
                 throw new RuntimeException("WebSocket communication failed", failure.get());
             String text = messageQueue.poll(100, TimeUnit.MILLISECONDS);
             if (text == null)
                 continue;
+            received.add(text);
             JsonValue result = extractResult(text);
             if (result != null)
                 return result;
         }
-        throw new AssertionError("No response received within timeout for method: " + method);
+        throw new AssertionError("No response received within timeout for method: " + method + ". Messages received: " + received);
     }
 
     /**
