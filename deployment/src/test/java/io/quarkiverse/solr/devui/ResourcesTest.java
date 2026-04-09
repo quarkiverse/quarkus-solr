@@ -25,6 +25,7 @@ class ResourcesTest {
     @Test
     void getResource() throws Exception {
         try (JsonRpcClient client = new JsonRpcClient()) {
+            client.sendVoid("devmcp_enable");
             JsonObject resource = client.send("resources_list").asJsonObject().getJsonArray("resources").stream()
                     .map(JsonValue::asJsonObject)
                     .filter(r -> r.getString("name").equals("quarkus-solr_solrBeans"))

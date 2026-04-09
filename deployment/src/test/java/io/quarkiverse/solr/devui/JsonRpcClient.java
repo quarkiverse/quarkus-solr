@@ -48,6 +48,30 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         return send(method, Map.of());
     }
 
+    /**
+     * Sends a command and waits for any acknowledgement, ignoring the result value.
+     * Use for fire-and-forget commands where only side effects matter.
+     */
+    public void sendVoid(String method) throws InterruptedException {
+        messageQueue.clear();
+        int sentId = id;
+        webSocket.send(createMessageObject(method, Map.of()));
+        long deadline = System.currentTimeMillis() + 5_000;
+        while (System.currentTimeMillis() < deadline) {
+            String text = messageQueue.poll(100, TimeUnit.MILLISECONDS);
+            if (text == null)
+                continue;
+            try (JsonReader reader = Json.createReader(new StringReader(text))) {
+                JsonObject obj = reader.readObject();
+                if (obj.containsKey("id") && obj.getInt("id") == sentId) {
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        // Timeout — ignore, command may not be available or already applied
+    }
+
     public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
         messageQueue.clear();
         webSocket.send(createMessageObject(method, params));
