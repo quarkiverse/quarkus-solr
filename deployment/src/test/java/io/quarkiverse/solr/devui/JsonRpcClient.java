@@ -76,7 +76,15 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
             if (obj.containsKey("error")) {
                 throw new RuntimeException("Error response received: " + obj.getJsonObject("error").getString("message"));
             }
-            return obj.getJsonObject("result").get("object");
+            JsonObject result = obj.getJsonObject("result");
+            if (result == null) {
+                throw new RuntimeException("Response did not include result, it was " + obj);
+            }
+            JsonValue resultObj = result.get("object");
+            if (resultObj == null) {
+                throw new RuntimeException("Response did not include result object, it was " + obj);
+            }
+            return resultObj;
         }
     }
 
