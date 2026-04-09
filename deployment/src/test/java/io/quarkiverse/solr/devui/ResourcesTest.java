@@ -12,7 +12,6 @@ import jakarta.json.JsonValue;
 import org.apache.solr.client.solrj.beans.Field;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -23,8 +22,6 @@ class ResourcesTest {
     static final QuarkusDevModeTest unitTest = new QuarkusDevModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class).addClass(Bean.class));
 
-    //TODO
-    @Disabled("This test is currently disabled because it is not working in the pipeline. This needs to be investigated and fixed.")
     @Test
     void getResource() throws Exception {
         try (JsonRpcClient client = new JsonRpcClient()) {

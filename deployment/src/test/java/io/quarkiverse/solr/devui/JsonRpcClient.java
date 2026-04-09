@@ -28,6 +28,7 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
     private final WebSocket webSocket;
     private final OkHttpClient client;
     private int id = 0;
+    private int expectedId = -1;
     private CountDownLatch countDownLatch;
     private AtomicReference<String> response;
     private AtomicReference<Throwable> throwable;
@@ -50,6 +51,7 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         countDownLatch = new CountDownLatch(1);
         response = new AtomicReference<>();
         throwable = new AtomicReference<>();
+        expectedId = id;
         webSocket.send(createMessageObject(method, params));
         assertTrue(countDownLatch.await(15, TimeUnit.SECONDS), "No response received within timeout");
         if (throwable.get() != null)
@@ -95,6 +97,16 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
+        try (JsonReader reader = Json.createReader(new StringReader(text))) {
+            JsonObject obj = reader.readObject();
+            if (!obj.containsKey("id") || obj.getInt("id") != expectedId) {
+                return; // server push notification or stale response — ignore
+            }
+        } catch (Exception e) {
+            throwable.set(e);
+            countDownLatch.countDown();
+            return;
+        }
         response.set(text);
         countDownLatch.countDown();
     }
