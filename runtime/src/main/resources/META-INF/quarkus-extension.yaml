@@ -1,5 +1,6 @@
 name: Solr
 description: Allows your application to interact with Solr with simple high-level methods.
+artifact: ${project.groupId}:${project.artifactId}:${project.version}
 metadata:
   short-name: "solr"
   keywords:

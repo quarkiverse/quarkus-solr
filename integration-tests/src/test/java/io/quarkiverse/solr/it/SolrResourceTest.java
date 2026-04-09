@@ -14,7 +14,7 @@ class SolrResourceTest {
     void add() {
         given()
                 .contentType("application/json")
-                .body(new SolrDocument("1", "Test Document", "This is a test document"))
+                .body(new SolrDocument("1", "Test", "Document", "This is a test document"))
                 .when().post("/solr")
                 .then()
                 .statusCode(204);
@@ -24,14 +24,15 @@ class SolrResourceTest {
                 .statusCode(200)
                 .body("size()", is(1))
                 .body("[0].id", is("1"))
-                .body("[0].name", is("Test Document"))
+                .body("[0].firstName", is("Test"))
+                .body("[0].lastName", is("Document"))
                 .body("[0].description", is("This is a test document"));
     }
 
     @Test
     void queryWithoutResult() {
         given()
-                .when().get("/solr?query=notpresent")
+                .when().get("/solr?query=not-present")
                 .then()
                 .statusCode(200)
                 .body(is("[]"));

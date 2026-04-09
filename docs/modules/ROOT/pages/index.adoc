@@ -58,7 +58,7 @@ The extension provides a https://quarkus.io/guides/dev-services[dev service] for
 This allows you to easily run a Solr instance in a container during development.
 
 By default, the dev service will start a Solr instance with a single collection named _dummy_.
-You can further https://docs.quarkiverse.io/quarkus-solr/dev/devservice.html[customize the dev service]
+You can further https://docs.quarkiverse.io/quarkus-solr/dev/devservice.html[customize the dev service].
 
 == Observability
 

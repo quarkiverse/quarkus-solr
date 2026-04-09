@@ -7,20 +7,24 @@ public class SolrDocument {
     @Field
     public String id;
 
-    @Field("name_t")
-    public String name;
+    @Field("firstName")
+    public String firstName;
 
-    @Field("description_t")
+    @Field("lastName")
+    public String lastName;
+
+    @Field("description")
     public String description;
 
     @SuppressWarnings("unused") //Used internally by solr
     public SolrDocument() {
     }
 
-    @SuppressWarnings("unused") //Used internally by jackson
-    public SolrDocument(String id, String name, String description) {
+    @SuppressWarnings("unused") //Used internally by Jackson
+    public SolrDocument(String id, String firstName, String lastName, String description) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.description = description;
     }
 }

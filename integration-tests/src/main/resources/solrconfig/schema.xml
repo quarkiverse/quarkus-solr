@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="default-config" version="1.7">
+    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+    <field name="_version_" type="plong" indexed="false" stored="false"/>
+    <field name="_text_" type="text_general" indexed="true" multiValued="true"/>
+    <field name="firstName" type="string" indexed="true" stored="true"/>
+    <field name="lastName" type="string" indexed="true" stored="true"/>
+    <field name="description" type="text_general" indexed="true" stored="true"/>
+
+    <uniqueKey>id</uniqueKey>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+    <fieldType name="plong" class="solr.LongPointField"/>
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <tokenizer name="standard"/>
+            <filter name="phonetic" encoder="DoubleMetaphone"/>
+            <filter name="lowercase"/>
+            <filter name="englishPossessive"/>
+            <filter name="porterStem"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer name="standard"/>
+            <filter name="phonetic" encoder="DoubleMetaphone"/>
+            <filter name="lowercase"/>
+            <filter name="englishPossessive"/>
+            <filter name="porterStem"/>
+        </analyzer>
+    </fieldType>
+
+    <copyField source="firstName" dest="_text_"/>
+    <copyField source="lastName" dest="_text_"/>
+    <copyField source="description" dest="_text_"/>
+</schema>
+

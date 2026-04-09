@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "quarkus-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://localhost:8080/q/dev-mcp"
+      ]
+    }
+  }
+}

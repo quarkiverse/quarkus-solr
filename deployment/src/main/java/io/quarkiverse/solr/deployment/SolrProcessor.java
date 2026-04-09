@@ -7,6 +7,7 @@ import io.quarkiverse.solr.runtime.SolrClientProducer;
 import io.quarkiverse.solr.runtime.observe.SolrHealthCheck;
 import io.quarkiverse.solr.runtime.observe.SolrMetricsRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
+import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
 import io.quarkus.arc.deployment.BeanContainerBuildItem;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -36,6 +37,11 @@ class SolrProcessor {
     @BuildStep
     HealthBuildItem addHealthCheck(SolrBuildTimeConfig solrBuildTimeConfig) {
         return new HealthBuildItem(SolrHealthCheck.class.getName(), solrBuildTimeConfig.healthEnabled());
+    }
+
+    @BuildStep
+    SolrBeanInformationBuildItem collectSolrBeans(BeanArchiveIndexBuildItem beanArchiveIndex) {
+        return SolrBeanInformationBuildItem.collectSolrBeans(beanArchiveIndex.getIndex());
     }
 
     @BuildStep
