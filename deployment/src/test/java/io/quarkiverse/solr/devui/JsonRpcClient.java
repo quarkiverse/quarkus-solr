@@ -47,11 +47,15 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
     }
 
     public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
+        return send(method, params, 15);
+    }
+
+    public JsonValue send(String method, Map<String, String> params, int timeoutSeconds) throws InterruptedException {
         countDownLatch = new CountDownLatch(1);
         response = new AtomicReference<>();
         throwable = new AtomicReference<>();
         webSocket.send(createMessageObject(method, params));
-        assertTrue(countDownLatch.await(15, TimeUnit.SECONDS), "No response received within timeout");
+        assertTrue(countDownLatch.await(timeoutSeconds, TimeUnit.SECONDS), "No response received within timeout");
         if (throwable.get() != null)
             throw new RuntimeException("WebSocket communication failed", throwable.get());
         return getResponse(response.get());
