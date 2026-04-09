@@ -48,6 +48,32 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
         return send(method, Map.of());
     }
 
+    public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
+        return send(method, params, 15);
+    }
+
+    /**
+     * Sends a JSON-RPC request and waits up to {@code timeoutSeconds} for a response that contains
+     * {@code result.object}. Intermediate messages (server push notifications, acknowledgement-only
+     * responses) are silently skipped so that they do not interfere with the result.
+     */
+    public JsonValue send(String method, Map<String, String> params, int timeoutSeconds) throws InterruptedException {
+        messageQueue.clear();
+        webSocket.send(createMessageObject(method, params));
+        long deadline = System.currentTimeMillis() + timeoutSeconds * 1_000L;
+        while (System.currentTimeMillis() < deadline) {
+            if (failure.get() != null)
+                throw new RuntimeException("WebSocket communication failed", failure.get());
+            String text = messageQueue.poll(100, TimeUnit.MILLISECONDS);
+            if (text == null)
+                continue;
+            JsonValue result = extractResult(text);
+            if (result != null)
+                return result;
+        }
+        throw new AssertionError("No response received within timeout for method: " + method);
+    }
+
     /**
      * Sends a command and waits for any acknowledgement, ignoring the result value.
      * Use for fire-and-forget commands where only side effects matter.
@@ -70,26 +96,6 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
             }
         }
         // Timeout — ignore, command may not be available or already applied
-    }
-
-    public JsonValue send(String method, Map<String, String> params) throws InterruptedException {
-        messageQueue.clear();
-        webSocket.send(createMessageObject(method, params));
-        long deadline = System.currentTimeMillis() + 15_000;
-        java.util.List<String> received = new java.util.ArrayList<>();
-        while (System.currentTimeMillis() < deadline) {
-            if (failure.get() != null)
-                throw new RuntimeException("WebSocket communication failed", failure.get());
-            String text = messageQueue.poll(100, TimeUnit.MILLISECONDS);
-            if (text == null)
-                continue;
-            received.add(text);
-            JsonValue result = extractResult(text);
-            if (result != null)
-                return result;
-        }
-        throw new AssertionError(
-                "No response received within timeout for method: " + method + ". Messages received: " + received);
     }
 
     /**

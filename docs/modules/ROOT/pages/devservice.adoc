@@ -1,29 +1,81 @@
 = Quarkus Solr Dev Service
 
-The extension provides a https://quarkus.io/guides/dev-services[dev service] for Solr.
-This allows you to easily run a Solr instance in a container during development.
+The extension provides a https://quarkus.io/guides/dev-services[dev service] for Solr that automatically starts a
+containerised Solr instance during development and testing — no manual setup required.
 
-== Image
+== Lifecycle
 
-By default, the dev service will use the `solr` image from Docker Hub, using the same version as the integrated SolrJ version.
-You can customize the image used by setting the `quarkus.solr.devservices.image-name` property.
+The dev service starts when:
+
+* The application runs in dev mode (`quarkus dev`) or during tests
+* No `quarkus.solr.url` is configured
+* Docker is available on the host
+
+It stops when the dev mode session ends. On restart, a new container is started unless a shared service is configured
+(see <<shared-dev-service>>).
+
+The dev service is enabled by default. To disable it explicitly:
 
 [source,properties]
 ----
-quarkus.solr.devservices.image-name=custom-solr-image:latest
+quarkus.solr.devservices.enabled=false
+----
+
+== Image
+
+By default, the dev service uses the official `solr` image from Docker Hub, pinned to the same version as the
+bundled SolrJ library. To use a different image:
+
+[source,properties]
+----
+quarkus.solr.devservices.image-name=solr:9.7
+----
+
+== Collection
+
+By default, the dev service creates a single collection named `dummy`. To use a different name:
+
+[source,properties]
+----
+quarkus.solr.devservices.collection=my-collection
 ----
 
 == Configuration
 
-By default, the dev service will start a Solr instance with a single collection named _dummy_ using the  https://github.com/apache/solr/tree/main/solr/server/solr/configsets/_default/conf[default Solr Configuration and schema].
-You can customize the configuration by providing your own configuration directory and setting the `quarkus.solr.devservices.configuration` property and the collection name with the `quarkus.solr.devservices.collection` property.
+By default, the collection is created with the
+https://github.com/apache/solr/tree/main/solr/server/solr/configsets/_default/conf[default Solr configuration and schema].
+To supply a custom schema and configuration, point to a local directory:
 
 [source,properties]
 ----
-quarkus.solr.devservices.configuration=/path/to/your/configuration
-quarkus.solr.devservices.collection=your-collection-name
+quarkus.solr.devservices.configuration=src/main/resources/solrconfig
 ----
 
-The configuration directory must contain the https://solr.apache.org/guide/solr/latest/configuration-guide/configuring-solrconfig-xml.html[solrconfig.xml] and all referenced files like `schema.xml`.
+The directory must contain
+https://solr.apache.org/guide/solr/latest/configuration-guide/configuring-solrconfig-xml.html[`solrconfig.xml`] and
+all files it references (such as `schema.xml` or `managed-schema.xml`).
 
-A new collection with the given name and configuration will be created when the dev service starts.
+At startup, the directory contents are zipped and uploaded to the running container via the Solr Collections API.
+The path is resolved relative to the project root. Changes to the configuration directory require a dev mode restart
+to take effect.
+
+[[shared-dev-service]]
+== Shared Dev Service
+
+By default each application gets its own Solr container. In multi-module projects you may want all modules to share
+a single container:
+
+[source,properties]
+----
+quarkus.solr.devservices.shared=true
+# Optional: identify the shared instance (default is "solr")
+quarkus.solr.devservices.service-name=my-shared-solr
+----
+
+When `shared=true`, Quarkus will reuse an existing container with the same service name rather than starting a new one.
+
+== Dev UI
+
+When the dev service is running, the xref:devui.adoc[Solr Dev UI card] at `/q/dev-ui` provides a direct link to the
+Solr Admin UI of the running container. The Admin UI URL is resolved dynamically from the running container's mapped
+port — no manual configuration needed.

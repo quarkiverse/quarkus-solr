@@ -56,7 +56,25 @@ jobs:
           java-version: 17
           cache: 'maven'
 
+      - name: Configure Chappie assistant
+        env:
+          CHAPPIE_BASE_URL: ${{ secrets.CHAPPIE_BASE_URL }}
+          CHAPPIE_MODEL_NAME: ${{ secrets.CHAPPIE_MODEL_NAME }}
+        run: |
+          mkdir -p ~/.quarkus/chappie
+          {
+            echo 'name=OpenAI'
+            [ -n "$CHAPPIE_BASE_URL" ] && echo "baseUrl=$CHAPPIE_BASE_URL"
+            [ -n "$CHAPPIE_MODEL_NAME" ] && echo "model=$CHAPPIE_MODEL_NAME"
+            echo 'apiKeyFromEnv=true'
+            echo 'apiKeyEnvVar=CHAPPIE_API_KEY'
+          } > ~/.quarkus/chappie/chappie-assistant.properties
+
       - name: Build with Maven
+        env:
+          CHAPPIE_API_KEY: ${{ secrets.CHAPPIE_API_KEY }}
+          CHAPPIE_BASE_URL: ${{ secrets.CHAPPIE_BASE_URL }}
+          CHAPPIE_MODEL_NAME: ${{ secrets.CHAPPIE_MODEL_NAME }}
         run: mvn -B clean install -Dno-format
 
       - name: Build with Maven (Native)

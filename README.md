@@ -4,75 +4,37 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.quarkiverse.solr/quarkus-solr-parent.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.quarkiverse.solr/quarkus-solr-parent)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Integrates [Apache Solr](https://solr.apache.org/) into Quarkus for JDK and native builds.
+A [Quarkus](https://quarkus.io/) extension that integrates [Apache Solr](https://solr.apache.org/) via SolrJ, with
+dev services, Dev UI, MCP support, and full observability. The user documentation is available on the [Quarkiverse Hub](https://docs.quarkiverse.io/quarkus-solr/dev/index.html).
 
-## Features
+## Building
 
-- Solr as a dev-service for local development
-- Provide [SolrJ](https://solr.apache.org/guide/solrj.html) beans for interacting with Solr
-- Native compilation support
-- Integration with Quarkus observability stack (health, metrics, logging)
+```bash
+./mvnw clean install
 
-## Getting Started
-
-Add the following dependency to your project:
-
-```xml
-
-<dependency>
-    <groupId>io.quarkiverse.solr</groupId>
-    <artifactId>quarkus-solr</artifactId>
-    <version>${latest.version}</version>
-</dependency>
+# Native image build (requires Docker)
+./mvnw -B install -Dnative -Dquarkus.native.container-build
 ```
-
-Then you can use SolrJ beans in your application to interact with Solr. For example:
-
-```java
-import org.apache.solr.client.solrj.SolrClient;
-
-@ApplicationScoped
-public class SolrService {
-    @Inject
-    SolrClient solrClient;
-
-    public SolrDocumentList query(String query) throws SolrServerException, IOException {
-        SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery(query);
-        return solrClient.query("collectionName", solrQuery).getResults();
-    }
-}
-```
-
-For dev-mode, a Solr instance will be automatically started and configured with a default collection called _dummy_. For
-non-dev-mode, you have to configure the Solr client using the following property:
-
-```properties
-quarkus.solr.url=http://localhost:8983/solr
-```
-
-## Documentation
-
-Check the [documentation](https://docs.quarkiverse.io/quarkus-solr/dev/index.html) for detailed information and usage
-guidelines.
-
-## Compatibility
-
-Quarkus Solr has only been tested with Solr 10.0.0 and Quarkus 3.34.0, but other versions of Solr and Quarkus should
-work as well.
-If you encounter any issues, please [report them in the issue](https://github.com/quarkiverse/quarkus-solr/issues)
-tracker.
 
 ## Contributing
 
-Feel free to contribute to this project by [submitting issues](https://github.com/quarkiverse/quarkus-solr/issues) or
-pull requests.
+Contributions are welcome. This project follows the
+[Quarkiverse contribution guidelines](https://github.com/quarkiverse/quarkiverse/wiki/Becoming-a-Quarkiverse-member),
+which require all CI checks to pass, code to be formatted with the project's code style, commits to be signed off
+(DCO), and pull requests to include tests for new behaviour.
+
+Please [open an issue](https://github.com/quarkiverse/quarkus-solr/issues) before starting significant work, so we can
+align on the approach.
+
+## Compatibility
+
+This extension is built against Solr 10.0.0 and Quarkus 3.x. Other recent versions of Solr and Quarkus should work.
+If you encounter compatibility problems, please [open an issue](https://github.com/quarkiverse/quarkus-solr/issues).
 
 ## Changelog
 
-Changelog is available in [GitHub](
-https://github.com/quarkiverse/quarkus-solr/releases)
+See [GitHub Releases](https://github.com/quarkiverse/quarkus-solr/releases) for the full changelog.
 
 ## License
 
-This project is licensed under the Apache License 2.0 — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [Apache License 2.0](LICENSE).
