@@ -1,22 +1,26 @@
 = Quarkus Solr
 
-https://solr.apache.org/[Apache Solr] is the blazing-fast, open source, multi-modal search platform built on the full-text, vector, and geospatial search capabilities of Apache Lucene.
-This extension provides integration with Solr, allowing you to easily add search capabilities to your Quarkus application.
+https://solr.apache.org/[Apache Solr] is the open source, multi-modal search platform built on the full-text, vector,
+and geospatial search capabilities of Apache Lucene.
+This extension integrates Solr into Quarkus via the SolrJ client library, and provides dev services, Dev UI tooling,
+and observability out of the box.
 
 It provides the following features:
 
-* Solr as a dev-service for local development
-* Provide https://solr.apache.org/guide/solrj.html[SolrJ] beans for interacting with Solr
+* Automatic Solr https://quarkus.io/guides/dev-services[dev service] for local development and testing
+* Injected https://solr.apache.org/guide/solrj.html[SolrJ] `SolrClient` beans, pre-configured from `application.properties`
+* https://quarkus.io/guides/dev-ui[Dev UI] card with Solr Admin UI link, JSON-RPC console, and AI query assistant
+* MCP tool exposure of all Dev UI operations for use with AI assistants
 * Native compilation support
-* Integration with Quarkus observability stack (health, metrics, logging)
+* Integration with the Quarkus observability stack (health, metrics, logging)
 
 include::./includes/attributes.adoc[]
 
 == Installation
 
-If you want to use this extension, you need to add the `io.quarkiverse.solr:quarkus-solr` extension first to your build file.
+Add the `io.quarkiverse.solr:quarkus-solr` extension to your build file.
 
-For instance, with Maven, add the following dependency to your POM file:
+With Maven:
 
 [source,xml,subs=attributes+]
 ----
@@ -27,11 +31,9 @@ For instance, with Maven, add the following dependency to your POM file:
 </dependency>
 ----
 
-== Use SolrJ in your application
+== Using SolrJ in your application
 
-You can inject the `SolrClient` bean provided by the extension to interact with Solr.
-Each class will get its own instance of `SolrClient` (scope is `@Dependent`), so you can safely add custom configuration to it if needed.
-For example:
+Inject `SolrClient` wherever you need to interact with Solr:
 
 [source,java]
 ----
@@ -45,26 +47,109 @@ public class SolrService {
     public SolrDocumentList query(String query) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery(query);
-        return solrClient.query("collectionName", solrQuery).getResults();
+        return solrClient.query("my-collection", solrQuery).getResults();
     }
 }
 ----
 
-Check the https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html[SolrJ documentation] for more details on how to use the `SolrClient` to https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#querying-in-solrj[Query] and https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#indexing-in-solrj[Index] documents in Solr.
+The `SolrClient` bean has `@Dependent` scope, meaning each injection point gets its own client instance.
+This is intentional: you can safely apply per-use-case configuration to one injected client without affecting others.
+
+The underlying client type depends on the configuration:
+
+* **Single node / HTTP**: `HttpJdkSolrClient` — used when a single URL is configured
+* **SolrCloud / ZooKeeper**: `CloudHttp2SolrClient` — used when multiple URLs are configured or `quarkus.solr.cloud=true`
+
+See the https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html[SolrJ documentation] for details on
+https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#querying-in-solrj[querying] and
+https://solr.apache.org/guide/solr/latest/deployment-guide/solrj.html#indexing-in-solrj[indexing] documents.
 
 == Dev Services for Solr
 
-The extension provides a https://quarkus.io/guides/dev-services[dev service] for Solr.
-This allows you to easily run a Solr instance in a container during development.
+When running in dev or test mode without a `quarkus.solr.url` configured, the extension automatically starts a
+containerised Solr instance via Docker. A collection named `dummy` is created by default.
 
-By default, the dev service will start a Solr instance with a single collection named _dummy_.
-You can further https://docs.quarkiverse.io/quarkus-solr/dev/devservice.html[customize the dev service].
+[source,properties]
+----
+# No configuration needed for dev mode — the dev service handles it.
+# For production, set:
+quarkus.solr.url=http://localhost:8983/solr
+----
+
+See xref:devservice.adoc[Customize Dev-Service] for how to change the image, collection name, and configuration.
+
+== SolrCloud
+
+The extension supports SolrCloud (ZooKeeper-based) clusters. Cloud mode activates automatically when you configure
+multiple node URLs, or you can force it explicitly:
+
+[source,properties]
+----
+# Multiple nodes — cloud mode is selected automatically
+quarkus.solr.url=http://solr1:8983/solr,http://solr2:8983/solr
+
+# Or force cloud mode with a single ZooKeeper URL
+quarkus.solr.cloud=true
+quarkus.solr.url=zookeeper-host:2181/solr
+----
+
+Key SolrCloud configuration properties:
+
+[cols="2,3", options="header"]
+|===
+|Property |Description
+|`quarkus.solr.cloud` |Force `CloudHttp2SolrClient` even with a single URL
+|`quarkus.solr.zk-client-timeout` |ZooKeeper session timeout (ms)
+|`quarkus.solr.zk-connect-timeout` |ZooKeeper connection timeout (ms)
+|`quarkus.solr.collection-cache-ttl` |How long to cache collection state (ms)
+|`quarkus.solr.parallel-cache-refreshes` |Refresh collection cache entries in parallel
+|`quarkus.solr.parallel-updates` |Send updates to all replicas in parallel
+|`quarkus.solr.can-use-zk-acls` |Enable ZooKeeper ACL support
+|===
+
+See the https://solr.apache.org/guide/solr/latest/deployment-guide/zookeeper-ensemble.html[Solr ZooKeeper documentation]
+for background on SolrCloud topology.
+
+== Dev UI
+
+When running in dev mode, a Solr card is available in the https://quarkus.io/guides/dev-ui[Quarkus Dev UI] at `/q/dev-ui`.
+It provides:
+
+* The SolrJ library version with a link to its documentation
+* A direct link to the Solr Admin UI of the running dev service
+* A JSON-RPC console to interact with Solr
+* An AI-powered query assistant
+
+See xref:devui.adoc[Dev UI & MCP] for full details.
 
 == Observability
 
-All interactions with Solr are logged at the DEBUG level, request and response details are logged at TRACE level.
-You can enable DEBUG logging for the `io.quarkiverse.solr` package to see the details of the interactions.
-If you add https://quarkus.io/guides/smallrye-health[quarkus-smallrye-health] or https://quarkus.io/guides/telemetry-micrometer[quarkus-micrometer-registry-prometheus] to your application, a health check and metrics will be automatically provided for the Solr client.
+=== Logging
+
+All Solr interactions are logged at `DEBUG` level. Request and response details are logged at `TRACE` level.
+Enable them in `application.properties`:
+
+[source,properties]
+----
+quarkus.log.category."io.quarkiverse.solr".level=DEBUG
+# For full request/response details:
+quarkus.log.category."io.quarkiverse.solr".level=TRACE
+----
+
+=== Health
+
+If https://quarkus.io/guides/smallrye-health[quarkus-smallrye-health] is on the classpath, a readiness check is
+automatically registered. It verifies that the Solr instance is reachable. The check can be disabled:
+
+[source,properties]
+----
+quarkus.solr.health-enabled=false
+----
+
+=== Metrics
+
+If https://quarkus.io/guides/telemetry-micrometer[quarkus-micrometer-registry-prometheus] is on the classpath,
+timers and counters are automatically registered for all Solr requests.
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference

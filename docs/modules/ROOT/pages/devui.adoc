@@ -1,0 +1,44 @@
+= Quarkus Solr Dev UI
+
+The extension registers a card in the https://quarkus.io/guides/dev-ui[Quarkus Dev UI] when running in dev mode.
+The card is available at `/q/dev-ui` and provides a direct link to the **Solr Admin UI** of the running dev service
+container. The Admin UI URL is resolved dynamically from the running container's mapped port.
+
+== MCP
+
+All Solr Dev UI operations are exposed as https://quarkus.io/guides/dev-mcp[MCP] tools, making them available to
+AI assistants and MCP clients connected to the dev mode endpoint. The following tools are provided:
+
+[cols="2,4", options="header"]
+|===
+|Tool |Description
+
+|`getSolrAdminUrl`
+|Returns the configured Solr URL.
+
+|`listCollections`
+|Lists all collections in the Solr instance.
+
+|`getSchema(collection)`
+|Returns the schema for the named collection.
+
+|`search(collection, query, fq, sortClauses, start, rows)`
+|Executes a search. `query` defaults to `*:*`. `fq` accepts a plain string or a JSON array of filter queries.
+`sortClauses` is a JSON object mapping field names to `asc` or `desc`.
+`start` and `rows` control pagination.
+
+|`indexJsonDocuments(collection, json)`
+|Indexes documents into the named collection. `json` can be a single JSON object or an array of objects.
+Changes are committed immediately.
+|===
+
+The registered Solr beans are also exposed as an MCP resource, so connected clients can inspect the application's
+Solr configuration.
+
+See the https://quarkus.io/guides/dev-mcp[Quarkus Dev MCP guide] for how to connect an MCP client.
+
+== AI Query Assistant
+
+The Solr card integrates with the https://quarkus.io/guides/assistant[Quarkus AI assistant]. When a language model
+is configured, you can describe what you want to find in plain language and the assistant will generate a valid Solr
+query for it. The assistant is only active in dev mode.
