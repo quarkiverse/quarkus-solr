@@ -18,7 +18,8 @@ class DevAssistantProcessorTest {
 
     @RegisterExtension
     static final QuarkusDevModeTest test = new QuarkusDevModeTest()
-            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
+            .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
+                    .addAsResource("DevAssistantProcessorTest/application.properties", "application.properties"));
 
     @Test
     void createQuery() throws Exception {
