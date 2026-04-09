@@ -64,7 +64,8 @@ public class JsonRpcClient extends WebSocketListener implements Closeable {
             if (result != null)
                 return result;
         }
-        throw new AssertionError("No response received within timeout for method: " + method + ". Messages received: " + received);
+        throw new AssertionError(
+                "No response received within timeout for method: " + method + ". Messages received: " + received);
     }
 
     /**
