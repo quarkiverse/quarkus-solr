@@ -35,11 +35,6 @@
             <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkiverse.chappie</groupId>
-            <artifactId>quarkus-chappie</artifactId>
-            <version>1.6.3</version>
-        </dependency>
-        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit</artifactId>
             <scope>test</scope>

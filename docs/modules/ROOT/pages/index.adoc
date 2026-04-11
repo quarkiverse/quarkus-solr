@@ -9,7 +9,7 @@ It provides the following features:
 
 * Automatic Solr https://quarkus.io/guides/dev-services[dev service] for local development and testing
 * Injected https://solr.apache.org/guide/solrj.html[SolrJ] `SolrClient` beans, pre-configured from `application.properties`
-* https://quarkus.io/guides/dev-ui[Dev UI] card with Solr Admin UI link, JSON-RPC console, and AI query assistant
+* https://quarkus.io/guides/dev-ui[Dev UI] card with Solr Admin UI link
 * MCP tool exposure of all Dev UI operations for use with AI assistants
 * Native compilation support
 * Integration with the Quarkus observability stack (health, metrics, logging)
@@ -112,13 +112,7 @@ for background on SolrCloud topology.
 
 == Dev UI
 
-When running in dev mode, a Solr card is available in the https://quarkus.io/guides/dev-ui[Quarkus Dev UI] at `/q/dev-ui`.
-It provides:
-
-* The SolrJ library version with a link to its documentation
-* A direct link to the Solr Admin UI of the running dev service
-* A JSON-RPC console to interact with Solr
-* An AI-powered query assistant
+When running in dev mode, a Solr card is available in the https://quarkus.io/guides/dev-ui[Quarkus Dev UI] at `/q/dev-ui`. Beside general information about the extension, it provides a link to the Solr Admin UI.
 
 See xref:devui.adoc[Dev UI & MCP] for full details.
 
