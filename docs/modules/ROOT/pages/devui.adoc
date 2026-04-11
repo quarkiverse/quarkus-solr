@@ -36,9 +36,3 @@ The registered Solr beans are also exposed as an MCP resource, so connected clie
 Solr configuration.
 
 See the https://quarkus.io/guides/dev-mcp[Quarkus Dev MCP guide] for how to connect an MCP client.
-
-== AI Query Assistant
-
-The Solr card integrates with the https://quarkus.io/guides/assistant[Quarkus AI assistant]. When a language model
-is configured, you can describe what you want to find in plain language and the assistant will generate a valid Solr
-query for it. The assistant is only active in dev mode.
