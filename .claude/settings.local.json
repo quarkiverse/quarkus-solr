@@ -5,7 +5,9 @@
       "Bash(jar tf:*)",
       "Bash(jar xf:*)",
       "Bash(javap:*)",
-      "Bash(./mvnw:*)"
+      "Bash(./mvnw:*)",
+      "WebFetch(domain:quarkus.io)",
+      "Bash(gh secret:*)"
     ]
   }
 }
