@@ -21,11 +21,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkiverse.solr.runtime.observe.SolrClientProxy;
 import io.quarkus.test.InMemoryLogHandler;
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 class LoggingTest {
     @RegisterExtension
-    static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
+    static final QuarkusExtensionTest unitTest = new QuarkusExtensionTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
     private static final Logger rootLogger = LogManager.getLogManager().getLogger("io.quarkiverse.solr");
     private final Level originalLevel = rootLogger.getLevel();
