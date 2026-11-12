@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.micrometer.core.instrument.FunctionCounter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.quarkus.test.QuarkusExtensionTest;
 
 class MetricsTest {
@@ -28,14 +28,14 @@ class MetricsTest {
 
     @Inject
     @SuppressWarnings("deprecation") // We need to use the same as quarkus...
-    PrometheusMeterRegistry prometheusMeterRegistry;
+    MeterRegistry meterRegistry;
 
     @Test
     void doesIncludeSolr() throws SolrServerException, IOException {
-        Timer totalTimer = prometheusMeterRegistry.get("solr.time").timer();
-        Timer adminTimer = prometheusMeterRegistry.get("solr.ADMIN.time").timer();
-        FunctionCounter totalCounter = prometheusMeterRegistry.get("solr.requests").functionCounter();
-        FunctionCounter adminCounter = prometheusMeterRegistry.get("solr.ADMIN.requests").functionCounter();
+        Timer totalTimer = meterRegistry.get("solr.time").timer();
+        Timer adminTimer = meterRegistry.get("solr.ADMIN.time").timer();
+        FunctionCounter totalCounter = meterRegistry.get("solr.requests").functionCounter();
+        FunctionCounter adminCounter = meterRegistry.get("solr.ADMIN.requests").functionCounter();
         assertEquals(0, totalCounter.count());
         assertEquals(0, adminCounter.count());
         solrClient.ping("dummy");
