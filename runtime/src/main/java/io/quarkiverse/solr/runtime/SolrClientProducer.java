@@ -16,6 +16,7 @@ import org.jboss.logging.Logger;
 
 import io.quarkiverse.solr.runtime.observe.SolrClientProxy;
 import io.quarkiverse.solr.runtime.observe.SolrMetrics;
+import io.quarkus.arc.ClientProxy;
 
 @ApplicationScoped
 public class SolrClientProducer {
@@ -26,7 +27,9 @@ public class SolrClientProducer {
 
     public SolrClientProducer(SolrRunTimeConfig runTimeConfig, ManagedExecutor managedExecutor) {
         this.runTimeConfig = runTimeConfig;
-        this.managedExecutor = managedExecutor;
+        // the JDK HTTP client calls the executor from its own threads, which must not be the ones creating the
+        // ManagedExecutor bean lazily through its client proxy, so we create it here and pass the actual instance
+        this.managedExecutor = ClientProxy.unwrap(managedExecutor);
     }
 
     public SolrMetrics getSolrMetrics() {

@@ -12,11 +12,11 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.test.QuarkusUnitTest;
+import io.quarkus.test.QuarkusExtensionTest;
 
 class DisabledDevServicesTest {
     @RegisterExtension
-    static final QuarkusUnitTest unitTest = new QuarkusUnitTest()
+    static final QuarkusExtensionTest unitTest = new QuarkusExtensionTest()
             .overrideConfigKey("quarkus.solr.devservices.enabled", "false")
             .overrideConfigKey("quarkus.solr.url", "http://localhost:8080")
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class));
